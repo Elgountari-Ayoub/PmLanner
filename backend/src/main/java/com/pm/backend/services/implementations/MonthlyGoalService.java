@@ -1,12 +1,19 @@
 package com.pm.backend.services.implementations;
 
 import com.pm.backend.entities.AnnualGoal;
+import com.pm.backend.repositories.MonthlyGoalRepository;
 import com.pm.backend.services.interfaces.AnnualGoalDao;
 
 import java.util.List;
 import java.util.Optional;
 
 public class MonthlyGoalService implements AnnualGoalDao {
+    private MonthlyGoalRepository repository;
+
+    public MonthlyGoalService(MonthlyGoalRepository repository) {
+        this.repository = repository;
+    }
+
     @Override
     public Optional<AnnualGoal> get(long id) {
         return Optional.empty();
