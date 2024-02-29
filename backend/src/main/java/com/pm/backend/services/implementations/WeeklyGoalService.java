@@ -1,13 +1,15 @@
 package com.pm.backend.services.implementations;
 
+import com.pm.backend.dtos.WeeklyGoalDTO;
 import com.pm.backend.entities.AnnualGoal;
 import com.pm.backend.repositories.WeeklyGoalRepository;
 import com.pm.backend.services.interfaces.AnnualGoalDao;
+import com.pm.backend.services.interfaces.WeeklyGoalDao;
 
 import java.util.List;
 import java.util.Optional;
 
-public class WeeklyGoalService implements AnnualGoalDao {
+public class WeeklyGoalService implements WeeklyGoalDao {
     private WeeklyGoalRepository repository;
 
     public WeeklyGoalService(WeeklyGoalRepository repository) {
@@ -15,27 +17,27 @@ public class WeeklyGoalService implements AnnualGoalDao {
     }
 
     @Override
-    public Optional<AnnualGoal> get(long id) {
+    public Optional<WeeklyGoalDTO> get(long id) {
         return Optional.empty();
     }
 
     @Override
-    public List<AnnualGoal> getAll() {
+    public List<WeeklyGoalDTO> getAll() {
         return null;
     }
 
     @Override
-    public void save(AnnualGoal annualGoal) {
+    public void save(WeeklyGoalDTO weeklyGoalDTO) {
 
     }
 
     @Override
-    public void update(AnnualGoal annualGoal, String[] params) {
+    public void update(WeeklyGoalDTO weeklyGoalDTO, String[] params) {
 
     }
 
     @Override
-    public void delete(AnnualGoal annualGoal) {
+    public void delete(WeeklyGoalDTO weeklyGoalDTO) {
 
     }
 }

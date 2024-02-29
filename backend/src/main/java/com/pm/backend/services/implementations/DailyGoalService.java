@@ -1,13 +1,15 @@
 package com.pm.backend.services.implementations;
 
+import com.pm.backend.dtos.DailyGoalDTO;
 import com.pm.backend.entities.AnnualGoal;
 import com.pm.backend.repositories.DailyGoalRepository;
 import com.pm.backend.services.interfaces.AnnualGoalDao;
+import com.pm.backend.services.interfaces.DailyGoalDao;
 
 import java.util.List;
 import java.util.Optional;
 
-public class DailyGoalService implements AnnualGoalDao {
+public class DailyGoalService implements DailyGoalDao {
     private DailyGoalRepository repository;
 
     public DailyGoalService(DailyGoalRepository repository) {
@@ -15,27 +17,27 @@ public class DailyGoalService implements AnnualGoalDao {
     }
 
     @Override
-    public Optional<AnnualGoal> get(long id) {
+    public Optional<DailyGoalDTO> get(long id) {
         return Optional.empty();
     }
 
     @Override
-    public List<AnnualGoal> getAll() {
+    public List<DailyGoalDTO> getAll() {
         return null;
     }
 
     @Override
-    public void save(AnnualGoal annualGoal) {
+    public void save(DailyGoalDTO dailyGoalDTO) {
 
     }
 
     @Override
-    public void update(AnnualGoal annualGoal, String[] params) {
+    public void update(DailyGoalDTO dailyGoalDTO, String[] params) {
 
     }
 
     @Override
-    public void delete(AnnualGoal annualGoal) {
+    public void delete(DailyGoalDTO dailyGoalDTO) {
 
     }
 }
