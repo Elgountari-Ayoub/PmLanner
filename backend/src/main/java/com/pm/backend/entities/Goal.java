@@ -13,7 +13,7 @@ import java.util.Date;
 public class Goal {
     private String title;
     private String details;
-    private final LocalDate deadline = LocalDate.now();
+    private LocalDate deadline;
     private Priority priority;
     private Status status;
     private int progress;

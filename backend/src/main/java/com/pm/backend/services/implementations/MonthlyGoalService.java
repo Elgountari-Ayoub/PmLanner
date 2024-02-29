@@ -5,10 +5,12 @@ import com.pm.backend.entities.AnnualGoal;
 import com.pm.backend.repositories.MonthlyGoalRepository;
 import com.pm.backend.services.interfaces.AnnualGoalDao;
 import com.pm.backend.services.interfaces.MonthlyGoalDao;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class MonthlyGoalService implements MonthlyGoalDao {
     private MonthlyGoalRepository repository;
 
