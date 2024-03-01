@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("api/v1/annualGoals")
 @CrossOrigin("*")
@@ -23,8 +24,13 @@ public class AnnualGoalController {
 
     @GetMapping()
     public ResponseEntity<List<AnnualGoalDTO>> getAll() {
-
         List<AnnualGoalDTO> annualGoalDTOList = annualGoalService.getAll();
         return ResponseEntity.ok(annualGoalDTOList);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AnnualGoalDTO> getById(@PathVariable long id) {
+        AnnualGoalDTO annualGoalDTO = annualGoalService.get(id);
+        return ResponseEntity.ok(annualGoalDTO);
     }
 }

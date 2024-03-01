@@ -2,6 +2,7 @@ package com.pm.backend.services.implementations;
 
 import com.pm.backend.dtos.AnnualGoalDTO;
 import com.pm.backend.entities.AnnualGoal;
+import com.pm.backend.exceptions.ResourceNotFoundException;
 import com.pm.backend.repositories.AnnualGoalRepository;
 import com.pm.backend.services.interfaces.AnnualGoalDao;
 import lombok.Data;
@@ -24,8 +25,12 @@ public class AnnualGoalService implements AnnualGoalDao {
         this.modelMapper = modelMapper;
     }
     @Override
-    public Optional<AnnualGoalDTO> get(long id) {
-        return Optional.empty();
+    public AnnualGoalDTO get(long id) {
+        AnnualGoal annualGoal = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Annual Goal not found"));
+
+        AnnualGoalDTO annualGoalDTO = modelMapper.map(annualGoal, AnnualGoalDTO.class);
+        return annualGoalDTO;
     }
 
     @Override

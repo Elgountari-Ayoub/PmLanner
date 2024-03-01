@@ -19,8 +19,8 @@ public class DailyGoalService implements DailyGoalDao {
     }
 
     @Override
-    public Optional<DailyGoalDTO> get(long id) {
-        return Optional.empty();
+    public DailyGoalDTO get(long id) {
+        return null;
     }
 
     @Override

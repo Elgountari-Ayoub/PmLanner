@@ -19,8 +19,8 @@ public class WeeklyGoalService implements WeeklyGoalDao {
     }
 
     @Override
-    public Optional<WeeklyGoalDTO> get(long id) {
-        return Optional.empty();
+    public WeeklyGoalDTO get(long id) {
+        return null;
     }
 
     @Override

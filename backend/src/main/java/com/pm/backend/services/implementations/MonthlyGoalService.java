@@ -19,8 +19,8 @@ public class MonthlyGoalService implements MonthlyGoalDao {
     }
 
     @Override
-    public Optional<MonthlyGoalDTO> get(long id) {
-        return Optional.empty();
+    public MonthlyGoalDTO get(long id) {
+        return null;
     }
 
     @Override
