@@ -6,13 +6,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 @MappedSuperclass
 public class Goal {
     private String title;
-    private String details;
+    private String description;
     private LocalDate deadline;
     private Priority priority;
     private Status status;

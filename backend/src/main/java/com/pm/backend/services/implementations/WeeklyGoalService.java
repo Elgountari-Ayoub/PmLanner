@@ -34,12 +34,12 @@ public class WeeklyGoalService implements WeeklyGoalDao {
     }
 
     @Override
-    public void update(WeeklyGoalDTO weeklyGoalDTO, String[] params) {
+    public void update(long id, WeeklyGoalDTO weeklyGoalDTO) {
 
     }
 
     @Override
-    public void delete(WeeklyGoalDTO weeklyGoalDTO) {
+    public void delete(long id) {
 
     }
 }

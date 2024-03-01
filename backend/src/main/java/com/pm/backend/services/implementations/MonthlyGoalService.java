@@ -34,12 +34,12 @@ public class MonthlyGoalService implements MonthlyGoalDao {
     }
 
     @Override
-    public void update(MonthlyGoalDTO monthlyGoalDTO, String[] params) {
+    public void update(long id, MonthlyGoalDTO monthlyGoalDTO) {
 
     }
 
     @Override
-    public void delete(MonthlyGoalDTO monthlyGoalDTO) {
+    public void delete(long id) {
 
     }
 }

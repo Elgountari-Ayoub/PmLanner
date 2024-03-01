@@ -11,7 +11,7 @@ public interface Dao<T> {
 
     void save(T t);
 
-    void update(T t, String[] params);
+    void update(long id, T t);
 
-    void delete(T t);
+    void delete(long id);
 }

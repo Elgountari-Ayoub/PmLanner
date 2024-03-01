@@ -18,18 +18,18 @@ import java.util.stream.Collectors;
 @Service
 public class AnnualGoalService implements AnnualGoalDao {
     private AnnualGoalRepository repository;
-    private  ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     public AnnualGoalService(AnnualGoalRepository repository, ModelMapper modelMapper) {
         this.repository = repository;
         this.modelMapper = modelMapper;
     }
+
     @Override
     public AnnualGoalDTO get(long id) {
-        AnnualGoal annualGoal = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Annual Goal not found"));
+        AnnualGoal existingGoal = this.findAnnualGoalElseThrowException(id);
 
-        AnnualGoalDTO annualGoalDTO = modelMapper.map(annualGoal, AnnualGoalDTO.class);
+        AnnualGoalDTO annualGoalDTO = modelMapper.map(existingGoal, AnnualGoalDTO.class);
         return annualGoalDTO;
     }
 
@@ -47,12 +47,28 @@ public class AnnualGoalService implements AnnualGoalDao {
     }
 
     @Override
-    public void update(AnnualGoalDTO annualGoalDTO, String[] params) {
+    public void update(long id, AnnualGoalDTO annualGoalDTO) {
+        AnnualGoal existingGoal = this.findAnnualGoalElseThrowException(id);
 
+        existingGoal.setTitle(annualGoalDTO.getTitle());
+        existingGoal.setDescription(annualGoalDTO.getDescription());
+        existingGoal.setDeadline(annualGoalDTO.getDeadline());
+        existingGoal.setPriority(annualGoalDTO.getPriority());
+        existingGoal.setProgress(annualGoalDTO.getProgress());
+
+        repository.save(existingGoal);
     }
 
     @Override
-    public void delete(AnnualGoalDTO annualGoalDTO) {
+    public void delete(long id) {
+        AnnualGoal existingGoal = this.findAnnualGoalElseThrowException(id);
 
+        repository.delete(existingGoal);
     }
+
+    private AnnualGoal findAnnualGoalElseThrowException(long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Annual Goal not found"));
+    }
+
 }

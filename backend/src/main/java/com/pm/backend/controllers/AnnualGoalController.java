@@ -17,11 +17,6 @@ public class AnnualGoalController {
     @Autowired
     private AnnualGoalDao annualGoalService;
 
-    @PostMapping()
-    public void save(@RequestBody AnnualGoalDTO annualGoalDTO) {
-        annualGoalService.save(annualGoalDTO);
-    }
-
     @GetMapping()
     public ResponseEntity<List<AnnualGoalDTO>> getAll() {
         List<AnnualGoalDTO> annualGoalDTOList = annualGoalService.getAll();
@@ -33,4 +28,20 @@ public class AnnualGoalController {
         AnnualGoalDTO annualGoalDTO = annualGoalService.get(id);
         return ResponseEntity.ok(annualGoalDTO);
     }
+
+    @PostMapping()
+    public void save(@RequestBody AnnualGoalDTO annualGoalDTO) {
+        annualGoalService.save(annualGoalDTO);
+    }
+
+    @PutMapping("/{id}")
+    public void update(@PathVariable long id,@RequestBody AnnualGoalDTO annualGoalDTO) {
+        annualGoalService.update(id, annualGoalDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable long id) {
+        annualGoalService.delete(id);
+    }
+
 }

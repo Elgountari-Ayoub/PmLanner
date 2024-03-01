@@ -34,12 +34,12 @@ public class DailyGoalService implements DailyGoalDao {
     }
 
     @Override
-    public void update(DailyGoalDTO dailyGoalDTO, String[] params) {
+    public void update(long id, DailyGoalDTO dailyGoalDTO) {
 
     }
 
     @Override
-    public void delete(DailyGoalDTO dailyGoalDTO) {
+    public void delete(long id) {
 
     }
 }
