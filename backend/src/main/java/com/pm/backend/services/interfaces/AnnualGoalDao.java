@@ -1,7 +1,7 @@
 package com.pm.backend.services.interfaces;
 
-import com.pm.backend.dtos.AnnualGoalDTO;
-import com.pm.backend.entities.AnnualGoal;
+import com.pm.backend.dtos.annualGoalDtos.AnnualGoal_MonthlyGoalsDTO;
 
-public interface AnnualGoalDao extends Dao<AnnualGoalDTO>{
+public interface AnnualGoalDao extends Dao<AnnualGoal_MonthlyGoalsDTO>{
+
 }

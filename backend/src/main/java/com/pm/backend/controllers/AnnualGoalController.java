@@ -1,14 +1,12 @@
 package com.pm.backend.controllers;
 
-import com.pm.backend.dtos.AnnualGoalDTO;
-import com.pm.backend.services.implementations.AnnualGoalService;
+import com.pm.backend.dtos.annualGoalDtos.AnnualGoal_MonthlyGoalsDTO;
 import com.pm.backend.services.interfaces.AnnualGoalDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequestMapping("api/v1/annual-goals")
 @CrossOrigin("*")
@@ -18,30 +16,32 @@ public class AnnualGoalController {
     private AnnualGoalDao annualGoalService;
 
     @GetMapping()
-    public ResponseEntity<List<AnnualGoalDTO>> getAll() {
-        List<AnnualGoalDTO> annualGoalDTOList = annualGoalService.getAll();
-        return ResponseEntity.ok(annualGoalDTOList);
+    public ResponseEntity<List<AnnualGoal_MonthlyGoalsDTO>> getAll() {
+        List<AnnualGoal_MonthlyGoalsDTO> annualGoalMonthlyGoalsDTOS = annualGoalService.getAll();
+        return ResponseEntity.ok(annualGoalMonthlyGoalsDTOS);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AnnualGoalDTO> getById(@PathVariable long id) {
-        AnnualGoalDTO annualGoalDTO = annualGoalService.get(id);
-        return ResponseEntity.ok(annualGoalDTO);
+    public ResponseEntity<AnnualGoal_MonthlyGoalsDTO> getById(@PathVariable long id) {
+        return ResponseEntity.ok(annualGoalService.get(id));
     }
 
     @PostMapping()
-    public void save(@RequestBody AnnualGoalDTO annualGoalDTO) {
-        annualGoalService.save(annualGoalDTO);
+    public void save(@RequestBody AnnualGoal_MonthlyGoalsDTO annualGoalMonthlyGoalsDTO) {
+        annualGoalService.save(annualGoalMonthlyGoalsDTO);
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable long id,@RequestBody AnnualGoalDTO annualGoalDTO) {
-        annualGoalService.update(id, annualGoalDTO);
+    public ResponseEntity<Void> update(@PathVariable long id, @RequestBody AnnualGoal_MonthlyGoalsDTO annualGoalMonthlyGoalsDTO) {
+        annualGoalService.update(id, annualGoalMonthlyGoalsDTO);
+        return ResponseEntity.ok().build();
+
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable long id) {
+    public ResponseEntity<Void> delete(@PathVariable long id) {
         annualGoalService.delete(id);
+        return ResponseEntity.ok().build();
     }
 
 }

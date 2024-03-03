@@ -1,18 +1,16 @@
 package com.pm.backend.services.implementations;
 
-import com.pm.backend.dtos.AnnualGoalDTO;
+import com.pm.backend.dtos.annualGoalDtos.AnnualGoal_MonthlyGoalsDTO;
+import com.pm.backend.dtos.monthlyGoalDtos.MonthlyGoalDTO;
 import com.pm.backend.entities.AnnualGoal;
 import com.pm.backend.exceptions.ResourceNotFoundException;
 import com.pm.backend.repositories.AnnualGoalRepository;
 import com.pm.backend.services.interfaces.AnnualGoalDao;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Data
 @Service
@@ -26,35 +24,40 @@ public class AnnualGoalService implements AnnualGoalDao {
     }
 
     @Override
-    public AnnualGoalDTO get(long id) {
+    public AnnualGoal_MonthlyGoalsDTO get(long id) {
         AnnualGoal existingGoal = this.findAnnualGoalElseThrowException(id);
 
-        AnnualGoalDTO annualGoalDTO = modelMapper.map(existingGoal, AnnualGoalDTO.class);
-        return annualGoalDTO;
+        AnnualGoal_MonthlyGoalsDTO annualGoalMonthlyGoalsDTO = modelMapper.map(existingGoal, AnnualGoal_MonthlyGoalsDTO.class);
+        return annualGoalMonthlyGoalsDTO;
     }
 
     @Override
-    public List<AnnualGoalDTO> getAll() {
+    public List<AnnualGoal_MonthlyGoalsDTO> getAll() {
         List<AnnualGoal> annualGoals = repository.findAll();
-        List<AnnualGoalDTO> annualGoalDTOS = annualGoals.stream().map(annualGoal -> modelMapper.map(annualGoal, AnnualGoalDTO.class)).toList();
-        return annualGoalDTOS;
+        List<AnnualGoal_MonthlyGoalsDTO> annualGoalMonthlyGoalsDTO = annualGoals.stream().map(annualGoal -> modelMapper.map(annualGoal, AnnualGoal_MonthlyGoalsDTO.class)).toList();
+        return annualGoalMonthlyGoalsDTO;
     }
 
     @Override
-    public void save(AnnualGoalDTO annualGoalDTO) {
-        AnnualGoal annualGoal = modelMapper.map(annualGoalDTO, AnnualGoal.class);
+    public void save(AnnualGoal_MonthlyGoalsDTO annualGoalMonthlyGoalsDTO) {
+        AnnualGoal annualGoal = modelMapper.map(annualGoalMonthlyGoalsDTO, AnnualGoal.class);
         repository.save(annualGoal);
     }
 
     @Override
-    public void update(long id, AnnualGoalDTO annualGoalDTO) {
+    public void save(AnnualGoal_MonthlyGoalsDTO annualGoalMonthlyGoalsDTO, long id) {
+
+    }
+
+    @Override
+    public void update(long id, AnnualGoal_MonthlyGoalsDTO annualGoalMonthlyGoalsDTO) {
         AnnualGoal existingGoal = this.findAnnualGoalElseThrowException(id);
 
-        existingGoal.setTitle(annualGoalDTO.getTitle());
-        existingGoal.setDescription(annualGoalDTO.getDescription());
-        existingGoal.setDeadline(annualGoalDTO.getDeadline());
-        existingGoal.setPriority(annualGoalDTO.getPriority());
-        existingGoal.setProgress(annualGoalDTO.getProgress());
+        existingGoal.setTitle(annualGoalMonthlyGoalsDTO.getTitle());
+        existingGoal.setDescription(annualGoalMonthlyGoalsDTO.getDescription());
+        existingGoal.setDeadline(annualGoalMonthlyGoalsDTO.getDeadline());
+        existingGoal.setPriority(annualGoalMonthlyGoalsDTO.getPriority());
+        existingGoal.setProgress(annualGoalMonthlyGoalsDTO.getProgress());
 
         repository.save(existingGoal);
     }

@@ -1,6 +1,7 @@
 package com.pm.backend.controllers;
 
-import com.pm.backend.dtos.DailyGoalDTO;
+import com.pm.backend.dtos.dailyGoalDtos.DailyGoalDTO;
+import com.pm.backend.dtos.dailyGoalDtos.DailyGoal_WeeklyGoalDTO;
 import com.pm.backend.services.interfaces.DailyGoalDao;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/daily-goals")
+@RequestMapping("/api/v1/daily-goals")
 public class DailyGoalController {
     private final DailyGoalDao dailyGoalService;
 
@@ -18,25 +19,23 @@ public class DailyGoalController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DailyGoalDTO> getDailyGoal(@PathVariable long id) {
-        DailyGoalDTO goalDTO = dailyGoalService.get(id);
-        return ResponseEntity.ok(goalDTO);
+    public ResponseEntity<DailyGoal_WeeklyGoalDTO> getDailyGoal(@PathVariable long id) {
+        return ResponseEntity.ok(dailyGoalService.get(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<DailyGoalDTO>> getAllDailyGoals() {
-        List<DailyGoalDTO> goalDTOs = dailyGoalService.getAll();
-        return ResponseEntity.ok(goalDTOs);
+    public ResponseEntity<List<DailyGoal_WeeklyGoalDTO>> getAllDailyGoals() {
+        return ResponseEntity.ok(dailyGoalService.getAll());
     }
 
     @PostMapping
-    public ResponseEntity<Void> createDailyGoal(@RequestBody DailyGoalDTO dailyGoalDTO) {
+    public ResponseEntity<Void> createDailyGoal(@RequestBody DailyGoal_WeeklyGoalDTO dailyGoalDTO) {
         dailyGoalService.save(dailyGoalDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateDailyGoal(@PathVariable long id, @RequestBody DailyGoalDTO dailyGoalDTO) {
+    public ResponseEntity<Void> updateDailyGoal(@PathVariable long id, @RequestBody DailyGoal_WeeklyGoalDTO dailyGoalDTO) {
         dailyGoalService.update(id, dailyGoalDTO);
         return ResponseEntity.ok().build();
     }

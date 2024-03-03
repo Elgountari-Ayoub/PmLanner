@@ -1,7 +1,6 @@
 package com.pm.backend.services.interfaces;
 
-import com.pm.backend.dtos.DailyGoalDTO;
-import com.pm.backend.entities.DailyGoal;
+import com.pm.backend.dtos.dailyGoalDtos.DailyGoal_WeeklyGoalDTO;
 
-public interface DailyGoalDao extends Dao<DailyGoalDTO>{
+public interface DailyGoalDao extends Dao<DailyGoal_WeeklyGoalDTO>{
 }

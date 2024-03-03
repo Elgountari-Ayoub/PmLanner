@@ -1,6 +1,7 @@
 package com.pm.backend.controllers;
 
-import com.pm.backend.dtos.MonthlyGoalDTO;
+import com.pm.backend.dtos.monthlyGoalDtos.MonthlyGoalDTO;
+import com.pm.backend.dtos.monthlyGoalDtos.MonthlyGoal_Annual_Weekly_GoalsDTO;
 import com.pm.backend.services.interfaces.MonthlyGoalDao;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,8 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequestMapping("/api/v1/monthly-goals")
+@CrossOrigin("*")
 @RestController
-@RequestMapping("/api/monthly-goals")
 public class MonthlyGoalController {
     private final MonthlyGoalDao monthlyGoalService;
 
@@ -18,25 +20,23 @@ public class MonthlyGoalController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MonthlyGoalDTO> getMonthlyGoal(@PathVariable long id) {
-        MonthlyGoalDTO goalDTO = monthlyGoalService.get(id);
-        return ResponseEntity.ok(goalDTO);
+    public ResponseEntity<MonthlyGoal_Annual_Weekly_GoalsDTO> getMonthlyGoal(@PathVariable long id) {
+        return ResponseEntity.ok(monthlyGoalService.get(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<MonthlyGoalDTO>> getAllMonthlyGoals() {
-        List<MonthlyGoalDTO> goalDTOs = monthlyGoalService.getAll();
-        return ResponseEntity.ok(goalDTOs);
+    public ResponseEntity<List<MonthlyGoal_Annual_Weekly_GoalsDTO>> getAllMonthlyGoals() {
+        return ResponseEntity.ok(monthlyGoalService.getAll());
     }
 
     @PostMapping
-    public ResponseEntity<Void> createMonthlyGoal(@RequestBody MonthlyGoalDTO monthlyGoalDTO) {
+    public ResponseEntity<Void> createMonthlyGoal(@RequestBody MonthlyGoal_Annual_Weekly_GoalsDTO monthlyGoalDTO) {
         monthlyGoalService.save(monthlyGoalDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateMonthlyGoal(@PathVariable long id, @RequestBody MonthlyGoalDTO monthlyGoalDTO) {
+    public ResponseEntity<Void> updateMonthlyGoal(@PathVariable long id, @RequestBody MonthlyGoal_Annual_Weekly_GoalsDTO monthlyGoalDTO) {
         monthlyGoalService.update(id, monthlyGoalDTO);
         return ResponseEntity.ok().build();
     }
