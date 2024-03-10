@@ -1,8 +1,33 @@
 <app-navbar></app-navbar>
 <app-sidebar></app-sidebar>
 <div class="p-4 sm:ml-64">
-  <div
-    class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14"
-  >
+  <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+    <mat-tab-group>
+      <mat-tab label="Annual">
+
+        <mat-card class="goal-card" *ngFor="let annualGoal of annualGoals">
+          <mat-card-header>
+            <mat-card-subtitle class="rounded">{{annualGoal.deadline}}</mat-card-subtitle>
+            <mat-card-title>{{annualGoal.title}}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{annualGoal.description}}</p>
+            <span class="inline-block mb-2 px-4 py2 rounded border border-dashed border-red-500 text-red-500">{{annualGoal.priority}}</span>
+            <span class="inline-block m-2 px-4 py2 rounded border border-dashed border-red-500 text-red-500">{{annualGoal.status}}</span>
+            <mat-divider></mat-divider>
+          </mat-card-content>
+          <mat-card-actions class="flex justify-end">
+            <button mat-button>Edit</button>
+            <button mat-button>Delete</button>
+          </mat-card-actions>
+          <mat-card-footer >
+            <!-- <mat-progress-bar mode="determinate" value="{{annualGoal.progress * 10}}"></mat-progress-bar> -->
+            <mat-progress-bar mode="determinate" value="{{annualGoal.progress * 10}}"></mat-progress-bar>
+
+          </mat-card-footer>
+        </mat-card>
+
+      </mat-tab>
+    </mat-tab-group>
   </div>
 </div>
