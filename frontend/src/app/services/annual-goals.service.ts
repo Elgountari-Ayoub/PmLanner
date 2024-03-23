@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IAnnualGoals } from '../Models/interfaces';
+import { IAnnualGoal } from '../Models/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,17 @@ export class AnnualGoalsService {
   private annualGoalsUrl = 'http://localhost:8080/api/v1/annual-goals';
   constructor(private http: HttpClient){}
 
-  getAnnualGoals() : Observable<IAnnualGoals[]>{
-    return this.http.get<IAnnualGoals[]>(this.annualGoalsUrl);
+  getGoals() : Observable<IAnnualGoal[]>{
+    return this.http.get<IAnnualGoal[]>(this.annualGoalsUrl);
+  }
+  create(annualGoal: IAnnualGoal): Observable<IAnnualGoal> {
+    return this.http.post<IAnnualGoal>(`${this.annualGoalsUrl}`, annualGoal);
+  }
+  edit(id?: number, annualGoal?: IAnnualGoal): Observable<IAnnualGoal> {
+    return this.http.post<IAnnualGoal>(`${this.annualGoalsUrl}/${id}`, annualGoal);
+  }
+
+  delete(id: number) {
+    return this.http.delete(`${this.annualGoalsUrl}/${id}`);
   }
 }
