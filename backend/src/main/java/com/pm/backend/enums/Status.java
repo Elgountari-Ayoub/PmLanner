@@ -2,6 +2,6 @@ package com.pm.backend.enums;
 
 public enum Status {
     TODO,
-    INPROGRESS,
+    IN_PROGRESS,
     DONE
 }
