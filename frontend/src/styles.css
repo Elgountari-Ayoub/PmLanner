@@ -1,1 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::selection{
+    background-color: red;
+    color: white;
+}
+
+/* .mdc-tab {
+    transition: .5s;
+    background-color: #eee !important;
+}
+.mdc-tab:hover {
+    background-color: #ddd !important;
+
+} */
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

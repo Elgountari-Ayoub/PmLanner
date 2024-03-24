@@ -1,0 +1,45 @@
+.goal-card {
+    max-width: 400px;
+}
+
+.mat-mdc-card-subtitle span {
+    color: red
+}
+
+
+.mat-mdc-card-header {
+    display: block;
+}
+
+.mat-mdc-card-header-text {
+    display: flex;
+    width: 100%;
+}
+
+/* 
+.pyramid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.pyramid-row {
+    display: flex;
+    width: 0;
+    height: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-bottom: 50px solid #ccc;
+}
+
+
+
+.pyramid-block {
+    width: 0;
+    height: 0;
+    border-top: 50px solid transparent;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-bottom: 50px solid transparent;
+} */
