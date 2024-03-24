@@ -1,7 +1,6 @@
 package com.pm.backend.services.implementations;
 
 import com.pm.backend.dtos.annualGoalDtos.AnnualGoal_MonthlyGoalsDTO;
-import com.pm.backend.dtos.monthlyGoalDtos.MonthlyGoalDTO;
 import com.pm.backend.entities.AnnualGoal;
 import com.pm.backend.exceptions.ResourceNotFoundException;
 import com.pm.backend.repositories.AnnualGoalRepository;
@@ -27,15 +26,13 @@ public class AnnualGoalService implements AnnualGoalDao {
     public AnnualGoal_MonthlyGoalsDTO get(long id) {
         AnnualGoal existingGoal = this.findAnnualGoalElseThrowException(id);
 
-        AnnualGoal_MonthlyGoalsDTO annualGoalMonthlyGoalsDTO = modelMapper.map(existingGoal, AnnualGoal_MonthlyGoalsDTO.class);
-        return annualGoalMonthlyGoalsDTO;
+        return modelMapper.map(existingGoal, AnnualGoal_MonthlyGoalsDTO.class);
     }
 
     @Override
     public List<AnnualGoal_MonthlyGoalsDTO> getAll() {
-        List<AnnualGoal> annualGoals = repository.findAll();
-        List<AnnualGoal_MonthlyGoalsDTO> annualGoalMonthlyGoalsDTO = annualGoals.stream().map(annualGoal -> modelMapper.map(annualGoal, AnnualGoal_MonthlyGoalsDTO.class)).toList();
-        return annualGoalMonthlyGoalsDTO;
+        List<AnnualGoal> annualGoals = repository.findAllByOrderByPriorityAscCreatedAt();
+        return annualGoals.stream().map(annualGoal -> modelMapper.map(annualGoal, AnnualGoal_MonthlyGoalsDTO.class)).toList();
     }
 
     @Override

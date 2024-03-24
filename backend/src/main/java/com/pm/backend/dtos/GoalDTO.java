@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @MappedSuperclass
@@ -15,6 +16,7 @@ public class GoalDTO implements Serializable {
     private String title;
     private String description;
     private LocalDate deadline;
+    private LocalDateTime createdAt = LocalDateTime.now();
     private Priority priority;
     private Status status;
     private int progress;

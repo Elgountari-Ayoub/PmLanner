@@ -10,19 +10,20 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
 @Component({
   selector: 'app-annual-goal',
   templateUrl: './annual-goal.component.html',
-  styleUrls: ['./annual-goal.component.css']
+  styleUrls: ['./annual-goal.component.css'],
 })
 export class AnnualGoalComponent implements OnInit {
   @Input() annualGoal?: IAnnualGoal;
   @Input() index?: number;
 
-  constructor(private annualGoalService: AnnualGoalsService, private formBuilder: FormBuilder, private datePipe: DatePipe) {
-  }
+  constructor(
+    private annualGoalService: AnnualGoalsService,
+    private formBuilder: FormBuilder,
+    private datePipe: DatePipe
+  ) {}
   ngOnInit(): void {
     this.initGoalEditForm();
   }
-
-
 
   goalEditForm!: FormGroup;
   priorities = Object.values(IPriority);
@@ -31,35 +32,37 @@ export class AnnualGoalComponent implements OnInit {
   initGoalEditForm() {
     // Initialize the form
     this.goalEditForm = this.formBuilder.group({
-      title: [this.annualGoal ? this.annualGoal.title : '', Validators.required],
-      description: [this.annualGoal ? this.annualGoal.description : '', Validators.required],
-      deadline: [this.annualGoal ? this.annualGoal.deadline : '', Validators.required],
-      priority: [this.annualGoal ? this.annualGoal.priority : '', Validators.required],
-      status: [this.annualGoal ? this.annualGoal.status : '', Validators.required],
-      progress: [this.annualGoal ? this.annualGoal.progress : '', Validators.required]
+      title: [
+        this.annualGoal ? this.annualGoal.title : '',
+        Validators.required,
+      ],
+      description: [
+        this.annualGoal ? this.annualGoal.description : '',
+        Validators.required,
+      ],
+      deadline: [
+        this.annualGoal ? this.annualGoal.deadline : '',
+        Validators.required,
+      ],
+      priority: [
+        this.annualGoal ? this.annualGoal.priority : '',
+        Validators.required,
+      ],
+      status: [
+        this.annualGoal ? this.annualGoal.status : '',
+        Validators.required,
+      ],
+      progress: [
+        this.annualGoal ? this.annualGoal.progress : '',
+        Validators.required,
+      ],
     });
   }
 
   // GOAL EDITION
-  @Output() goalEdited = new EventEmitter<void>();
-  editGoal() {
-    if (this.goalEditForm.valid) {
-      const formData = this.goalEditForm.value;
-      const formattedDate = this.datePipe.transform(this.goalEditForm.get('date')?.value, "yyyy-MM-dd");
-      const goalFormWithFormattedDate = { ...this.goalEditForm.value, date: formattedDate }
-      this.annualGoalService.edit(this.annualGoal?.id, goalFormWithFormattedDate).subscribe({
-        next: goal => {
-          this.goalEdited.emit();
-        },
-        error: (error) => {
-          console.log(error);
-        },
-      });
-      console.log('Form submitted:', formData);
-    } else {
-      // Handle form validation errors
-      console.log('Form is invalid');
-    }
+  @Output() showEditGoalModal = new EventEmitter<void>();
+  showEditModal() {
+    this.showEditGoalModal.emit();
   }
 
   @Output() goalDeleted = new EventEmitter<void>();
@@ -71,22 +74,22 @@ export class AnnualGoalComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
         this.annualGoalService.delete(id).subscribe({
-          next: data => {
+          next: (data) => {
             this.goalDeleted.emit();
             Swal.fire(
               'Deleted!',
               'Your annual goal has been deleted.',
               'success'
-            )
+            );
           },
-          error: err => {
+          error: (err) => {
             console.log(err);
-          }
-        })
+          },
+        });
       }
     });
   }
@@ -118,5 +121,4 @@ export class AnnualGoalComponent implements OnInit {
         return '';
     }
   }
-
 }

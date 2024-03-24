@@ -17,7 +17,7 @@ export class AnnualGoalsService {
     return this.http.post<IAnnualGoal>(`${this.annualGoalsUrl}`, annualGoal);
   }
   edit(id?: number, annualGoal?: IAnnualGoal): Observable<IAnnualGoal> {
-    return this.http.post<IAnnualGoal>(`${this.annualGoalsUrl}/${id}`, annualGoal);
+    return this.http.put<IAnnualGoal>(`${this.annualGoalsUrl}/${id}`, annualGoal);
   }
 
   delete(id: number) {
