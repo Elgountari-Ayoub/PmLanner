@@ -17,33 +17,35 @@ import { MonthlyGoalService } from 'src/app/services/monthly-goal.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class DashboardComponent implements OnInit {
-  annualGoal!: IAnnualGoal;
+  priorities = Object.values(IPriority);
+  statuses = Object.values(IStatus);
   constructor(
     private annualGoalService: AnnualGoalsService,
     private monthlyGoalService: MonthlyGoalService,
-    private formBuilder: FormBuilder,
-    private datePipe: DatePipe
+    private formBuilder: FormBuilder
   ) {}
   ngOnInit(): void {
-    this.initForm();
-    this.getGoals();
+    this.getAnnualGoals();
+    this.initAnnualGoalCreateForm();
+    this.initAnnualGoalEditForm();
+    
     this.getMonthlyGoals();
-    this.initGoalEditForm();
+    this.initMonthlyGoalCreateForm();
+    this.initMonthlyGoalEditForm();
   }
 
-  //CORE METHODS
-
-  // ANNUAL GOALS
+  // ##############################################################################
+  // ------------------------------------------------------------------------------
+  // ################################ ANNUAL GOALS ################################
+  // ------------------------------------------------------------------------------
+  // ##############################################################################
+  annualGoal!: IAnnualGoal;
   annualGoals: IAnnualGoal[] = [];
   annualGoals_Nested: IAnnualGoal[][] = [];
 
   goalCreateForm!: FormGroup;
 
-  // Enums for select options
-  priorities = Object.values(IPriority);
-  statuses = Object.values(IStatus);
-
-  getGoals() {
+  getAnnualGoals() {
     this.annualGoalService.getGoals().subscribe({
       next: (data) => {
         this.annualGoals = data as IAnnualGoal[];
@@ -55,11 +57,8 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  //   ##################################################################################
-  //   #                    ANNUAL GOAL CREATE
-  //   ##################################################################################
-  // Initialize the annual goal form
-  initForm() {
+  // ################################ ANNUAL GOAL CREATE ################################
+  initAnnualGoalCreateForm() {
     this.goalCreateForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -91,7 +90,7 @@ export class DashboardComponent implements OnInit {
 
       this.annualGoalService.create(formData).subscribe({
         next: (goal) => {
-          this.getGoals();
+          this.getAnnualGoals();
         },
         error: (error) => {
           console.log(error);
@@ -104,15 +103,13 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  //   ##################################################################################
-  //   #                    ANNUAL GOAL EDIT
-  //   ##################################################################################
+  // ################################ ANNUAL GOAL EDIT ################################
 
-  goalEditForm!: FormGroup;
+  annualGoalEditForm!: FormGroup;
 
-  initGoalEditForm() {
+  initAnnualGoalEditForm() {
     // Initialize the form
-    this.goalEditForm = this.formBuilder.group({
+    this.annualGoalEditForm = this.formBuilder.group({
       title: [
         this.annualGoal ? this.annualGoal.title : '',
         Validators.required,
@@ -140,9 +137,9 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  showEditGoalModal(annualGoal: IAnnualGoal) {
+  showAnnualGoalEditModal(annualGoal: IAnnualGoal) {
     this.annualGoal = annualGoal;
-    this.initGoalEditForm();
+    this.initAnnualGoalEditForm();
 
     let editModal = document.getElementById('edit-modal');
     if (editModal != null) {
@@ -150,9 +147,9 @@ export class DashboardComponent implements OnInit {
       editModal.classList.add('flex');
     }
   }
-  hideEditGoalModal() {
+  hideAnnualGoalEditModal() {
     this.annualGoal = {} as IAnnualGoal;
-    this.initGoalEditForm();
+    this.initAnnualGoalEditForm();
 
     let editModal = document.getElementById('edit-modal');
     if (editModal != null) {
@@ -161,14 +158,14 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  editGoal() {
-    if (this.goalEditForm.valid) {
-      const formData = this.goalEditForm.value;
+  editAnnualGoal() {
+    if (this.annualGoalEditForm.valid) {
+      const formData = this.annualGoalEditForm.value;
 
       this.annualGoalService.edit(this.annualGoal?.id, formData).subscribe({
         next: (goal) => {
-          this.getGoals();
-          this.hideEditGoalModal();
+          this.getAnnualGoals();
+          this.hideAnnualGoalEditModal();
         },
         error: (error) => {
           console.log(error);
@@ -180,12 +177,13 @@ export class DashboardComponent implements OnInit {
       console.log('Form is invalid');
     }
   }
-  // -------------------------------------------------------------------------------------------
-  // -------------------------------------------------------------------------------------------
-  // -------------------------------------------------------------------------------------------
-  // -------------------------------------------------------------------------------------------
-  // -------------------------------------------------------------------------------------------
-  // MONTHLY GOALS
+  // ###############################################################################
+  // -------------------------------------------------------------------------------
+  // ################################ MONTHLY GOALS ################################
+  // -------------------------------------------------------------------------------
+  // ###############################################################################
+  monthlyGoal!: IMonthlyGoal;
+
   monthlyGolas: IMonthlyGoal[] = [];
   monthlyGoals_Nested: IMonthlyGoal[][] = [];
   getMonthlyGoals() {
@@ -200,6 +198,109 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  // ################################ CREATE MONTHYL GOAL ################################
+
+  monthlyGoalCreateForm!: FormGroup;
+  initMonthlyGoalCreateForm() {
+    this.monthlyGoalCreateForm = this.formBuilder.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      deadline: ['', Validators.required],
+      priority: ['', Validators.required],
+      status: ['TODO', Validators.required],
+      progress: [0, Validators.required],
+      annualGoal: [null, Validators.required],
+    });
+  }
+  showMonthlyGoalCreateModal() {
+    let editModal = document.getElementById('monthly-goal-create-modal');
+    if (editModal != null) {
+      editModal.classList.remove('hidden');
+      editModal.classList.add('flex');
+    }
+  }
+  hideMonthlyGoaCreatelModal() {
+    let editModal = document.getElementById('monthly-goal-create-modal');
+    if (editModal != null) {
+      editModal.classList.remove('flex');
+      editModal.classList.add('hidden');
+    }
+  }
+  createMonthlyGoal() {
+    if (this.monthlyGoalCreateForm.valid) {
+      const formData = this.monthlyGoalCreateForm.value;
+      this.monthlyGoalService.create(formData).subscribe({
+        next: (goal) => {
+          this.getMonthlyGoals();
+          this.monthlyGoalCreateForm.reset(); // Optionally reset the form after successful creation
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+      console.log('Form submitted:', formData);
+    } else {
+      console.log('Form is invalid');
+    }
+  }
+
+  // ################################ EDIT MONTHYL GOAL ################################
+
+  monthylGoalEditForm!: FormGroup;
+
+  initMonthlyGoalEditForm() {
+    // Initialize the form
+    this.annualGoalEditForm = this.formBuilder.group({
+      title: [
+        this.annualGoal ? this.annualGoal.title : '',
+        Validators.required,
+      ],
+      description: [
+        this.annualGoal ? this.annualGoal.description : '',
+        Validators.required,
+      ],
+      deadline: [
+        this.annualGoal ? this.annualGoal.deadline : '',
+        Validators.required,
+      ],
+      priority: [
+        this.annualGoal ? this.annualGoal.priority : '',
+        Validators.required,
+      ],
+      status: [
+        this.annualGoal ? this.annualGoal.status : '',
+        Validators.required,
+      ],
+      progress: [
+        this.annualGoal ? this.annualGoal.progress : '',
+        Validators.required,
+      ],
+    });
+  }
+  showMonthlyGoalEditModal(monthylGoal: IMonthlyGoal) {
+    this.monthlyGoal = monthylGoal;
+    this.initAnnualGoalEditForm();
+    let editModal = document.getElementById('monthly-goal-edit-modal');
+    if (editModal != null) {
+      editModal.classList.remove('hidden');
+      editModal.classList.add('flex');
+    }
+  }
+
+  hideMonthlyGoalEditModal() {
+    this.monthlyGoal = {} as IMonthlyGoal;
+    this.initAnnualGoalEditForm();
+    let editModal = document.getElementById('monthly-goal-edit-modal');
+    if (editModal != null) {
+      editModal.classList.remove('flex');
+      editModal.classList.add('hidden');
+    }
+  }
+
+  // ----------------------------------------------------------------
+  // HELPERS HELPERS HELPERS HELPERS HELPERS HELPERS
+  // HELPERS HELPERS HELPERS HELPERS HELPERS HELPERS
+  // ----------------------------------------------------------------
   // HELPER METHODS
   rows: number[][] = [];
 

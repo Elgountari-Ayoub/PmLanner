@@ -14,4 +14,15 @@ export class MonthlyGoalService {
   getMonthlyGoals() : Observable<IMonthlyGoal[]>{
     return this.http.get<IMonthlyGoal[]>(this.monthlyGoalsUrl);
   }
+
+  create(annualGoal: IMonthlyGoal): Observable<IMonthlyGoal> {
+    return this.http.post<IMonthlyGoal>(`${this.monthlyGoalsUrl}`, annualGoal);
+  }
+  edit(id?: number, annualGoal?: IMonthlyGoal): Observable<IMonthlyGoal> {
+    return this.http.put<IMonthlyGoal>(`${this.monthlyGoalsUrl}/${id}`, annualGoal);
+  }
+
+  delete(id: number) {
+    return this.http.delete(`${this.monthlyGoalsUrl}/${id}`);
+  }
 }

@@ -16,54 +16,16 @@ export class AnnualGoalComponent implements OnInit {
   @Input() annualGoal?: IAnnualGoal;
   @Input() index?: number;
 
-  constructor(
-    private annualGoalService: AnnualGoalsService,
-    private formBuilder: FormBuilder,
-    private datePipe: DatePipe
-  ) {}
-  ngOnInit(): void {
-    this.initGoalEditForm();
-  }
+  constructor(private annualGoalService: AnnualGoalsService) {}
+  ngOnInit(): void {}
 
-  goalEditForm!: FormGroup;
-  priorities = Object.values(IPriority);
-  statuses = Object.values(IStatus);
-
-  initGoalEditForm() {
-    // Initialize the form
-    this.goalEditForm = this.formBuilder.group({
-      title: [
-        this.annualGoal ? this.annualGoal.title : '',
-        Validators.required,
-      ],
-      description: [
-        this.annualGoal ? this.annualGoal.description : '',
-        Validators.required,
-      ],
-      deadline: [
-        this.annualGoal ? this.annualGoal.deadline : '',
-        Validators.required,
-      ],
-      priority: [
-        this.annualGoal ? this.annualGoal.priority : '',
-        Validators.required,
-      ],
-      status: [
-        this.annualGoal ? this.annualGoal.status : '',
-        Validators.required,
-      ],
-      progress: [
-        this.annualGoal ? this.annualGoal.progress : '',
-        Validators.required,
-      ],
-    });
-  }
-
-  // GOAL EDITION
+  // GOAL EDITIONEDIT GOAL EVENT EMITTER
   @Output() showEditGoalModal = new EventEmitter<void>();
   showEditModal() {
     this.showEditGoalModal.emit();
   }
+
+  // ################################ DELETE ANNUAL GOAL ################################
 
   @Output() goalDeleted = new EventEmitter<void>();
   deleteGoal(id: number) {

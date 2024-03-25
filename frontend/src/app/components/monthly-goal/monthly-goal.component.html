@@ -1,6 +1,6 @@
-<div *ngIf="monthlyGoal" class="p-4 rounded-lg flex flex-col gap-2">
+<div *ngIf="monthlyGoal" class="p-4 rounded-lg flex flex-col justify-between gap-2 h-full cursor-pointer" id="goal-card">
     <div class="flex justify-between">
-        <span class="inline-block text-red-700 font-bold">{{ monthlyGoal.deadline }}</span>
+        <span class="inline-block text-red-700">{{ monthlyGoal.deadline }}</span>
         <span class="inline-block rounded-lg p-2 italic" [class]="getPriorityStyleClass(monthlyGoal.priority)">{{
             monthlyGoal.priority |
             titlecase }}</span>
@@ -8,7 +8,17 @@
     <h2 class="text-center m-4 sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl">{{ monthlyGoal.title | uppercase }}
     </h2>
     <p class="text-sm">{{ monthlyGoal.description }}</p>
-    <span>{{ monthlyGoal.progress * 10 }}%</span>
 
-    <mat-progress-bar mode="determinate" [value]=" monthlyGoal.progress * 10"></mat-progress-bar>
+    <div class="flex justify-between">
+        <span class="inline-block">{{ monthlyGoal.progress * 10 }}%</span>
+        <div class="flex justify-between gap-2" id="goal-options">
+            <mat-icon 
+            (click)="showEditModal()"
+            class="text-blue-500 cursor-pointer" title="Edit" aria-hidden="false" aria-label="edit icon"
+                fontIcon="edit"></mat-icon>
+            <mat-icon class="text-red-500 cursor-pointer" title="Delete" aria-hidden="false" aria-label="delete icon"
+                fontIcon="delete" (click)="deleteGoal(monthlyGoal.id)"></mat-icon>
+        </div>
+    </div>
+    <mat-progress-bar mode="determinate" [value]="monthlyGoal.progress * 10"></mat-progress-bar>
 </div>
