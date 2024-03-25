@@ -20,9 +20,13 @@ export enum IStatus {
 }
 
 export interface IAnnualGoal extends IGoal {
+    monthlyGoals?: IMonthlyGoal[]
 
 }
 export interface IMonthlyGoal extends IGoal {
     annualGoal: IAnnualGoal
 
+}
+export interface IWeeklyGoal extends IGoal {
+    monthlyGoal: IMonthlyGoal
 }

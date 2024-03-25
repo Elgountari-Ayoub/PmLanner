@@ -14,6 +14,9 @@ export class MonthlyGoalService {
   getMonthlyGoals() : Observable<IMonthlyGoal[]>{
     return this.http.get<IMonthlyGoal[]>(this.monthlyGoalsUrl);
   }
+  getMonthlyGoalsByAnnualGoalId(id: number) : Observable<IMonthlyGoal[]>{
+    return this.http.get<IMonthlyGoal[]>(`${this.monthlyGoalsUrl}/annualGoal/${id}`);
+  }
 
   create(annualGoal: IMonthlyGoal): Observable<IMonthlyGoal> {
     return this.http.post<IMonthlyGoal>(`${this.monthlyGoalsUrl}`, annualGoal);

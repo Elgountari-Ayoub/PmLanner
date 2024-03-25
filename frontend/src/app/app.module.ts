@@ -21,6 +21,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import { LandingComponent } from './components/landing/landing.component';
 import { AnnualGoalComponent } from './components/annual-goal/annual-goal.component';
 import { MonthlyGoalComponent } from './components/monthly-goal/monthly-goal.component';
+import { AnnualGoalMonthlyGoalsComponent } from './components/annual-goal-monthly-goals/annual-goal-monthly-goals.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { MonthlyGoalComponent } from './components/monthly-goal/monthly-goal.com
     DashboardComponent,
     LandingComponent,
     AnnualGoalComponent,
-    MonthlyGoalComponent
+    MonthlyGoalComponent,
+    AnnualGoalMonthlyGoalsComponent
   ],
   imports: [
     BrowserAnimationsModule,

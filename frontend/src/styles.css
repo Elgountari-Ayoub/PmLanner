@@ -2,18 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-::selection{
-    background-color: red;
-    color: white;
+::selection {
+  background-color: red;
+  color: white;
 }
 
-/* .mdc-tab {
-    transition: .5s;
-    background-color: #eee !important;
+html,
+body {
+  height: 100%;
 }
-.mdc-tab:hover {
-    background-color: #ddd !important;
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+#goal-options {
+  visibility: hidden !important;
+  /* display: none !important; */
+}
 
-} */
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+#goal-card:hover #goal-options {
+  visibility: visible !important;
+}

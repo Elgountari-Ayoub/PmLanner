@@ -1,24 +1,47 @@
-<div *ngIf="annualGoal" class="p-4 rounded-lg flex flex-col justify-between gap-2 h-full cursor-pointer" id="goal-card">
-    <div class="flex justify-between">
-        <span class="inline-block text-red-700">{{ annualGoal.deadline }}</span>
-        <span class="inline-block rounded-lg p-2 italic" [class]="getPriorityStyleClass(annualGoal.priority)">{{
-            annualGoal.priority |
-            titlecase }}</span>
-    </div>
-    <h2 class="text-center m-4 sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl">{{ annualGoal.title | uppercase }}
-    </h2>
-    <p class="text-sm">{{ annualGoal.description }}</p>
+<div
+  *ngIf="annualGoal"
+  class="p-4 rounded-lg flex flex-col justify-between gap-2 h-full cursor-pointer"
+  id="goal-card"
+>
+  <div class="flex justify-between">
+    <span class="inline-block text-red-700">{{ annualGoal.deadline }}</span>
+    <span
+      class="inline-block rounded-lg p-2 italic"
+      [class]="getPriorityStyleClass(annualGoal.priority)"
+      >{{ annualGoal.priority | titlecase }}</span
+    >
+  </div>
+  <h2
+    class="text-center m-4 sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl hover:underline hover:text-blue-500"
+    [routerLink]="['/annualGoalMonthlyGoals', annualGoal.id]"
+  >
+    {{ annualGoal.title | uppercase }}
+  </h2>
+  <p class="text-sm">{{ annualGoal.description }}</p>
 
-    <div class="flex justify-between">
-        <span class="inline-block">{{ annualGoal.progress * 10 }}%</span>
-        <div class="flex justify-between gap-2" id="goal-options">
-            <mat-icon 
-            (click)="showEditModal()"
-            class="text-blue-500 cursor-pointer" title="Edit" aria-hidden="false" aria-label="edit icon"
-                fontIcon="edit"></mat-icon>
-            <mat-icon class="text-red-500 cursor-pointer" title="Delete" aria-hidden="false" aria-label="delete icon"
-                fontIcon="delete" (click)="deleteGoal(annualGoal.id)"></mat-icon>
-        </div>
+  <div class="flex justify-between">
+    <span class="inline-block">{{ annualGoal.progress * 10 }}%</span>
+    <div class="flex justify-between gap-2" id="goal-options">
+      <mat-icon
+        (click)="showEditModal()"
+        class="text-blue-500 cursor-pointer"
+        title="Edit"
+        aria-hidden="false"
+        aria-label="edit icon"
+        fontIcon="edit"
+      ></mat-icon>
+      <mat-icon
+        class="text-red-500 cursor-pointer"
+        title="Delete"
+        aria-hidden="false"
+        aria-label="delete icon"
+        fontIcon="delete"
+        (click)="deleteGoal(annualGoal.id)"
+      ></mat-icon>
     </div>
-    <mat-progress-bar mode="determinate" [value]="annualGoal.progress * 10"></mat-progress-bar>
+  </div>
+  <mat-progress-bar
+    mode="determinate"
+    [value]="annualGoal.progress * 10"
+  ></mat-progress-bar>
 </div>
