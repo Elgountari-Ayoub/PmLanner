@@ -21,7 +21,7 @@
           *ngFor="let monthlyGoal of monthlyGoals; let i = index"
           [monthlyGoal]="monthlyGoal"
           [index]="i"
-          (goalDeleted)="getMonthlyGoals()"
+          (goalDeleted)="getMonthlyGoalsByAnnualGoalId()"
           (showEditGoalModal)="showMonthlyGoalEditModal(monthlyGoal)"
           class="rounded-lg mx-2 hover:shadow-goal hover:scale-101 transition ease-linear delay-150"
           [class]="getGoalCardStyleClass(i)"

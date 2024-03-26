@@ -25,6 +25,7 @@ export interface IAnnualGoal extends IGoal {
 }
 export interface IMonthlyGoal extends IGoal {
     annualGoal: IAnnualGoal
+    weeklyGoals?: IWeeklyGoal[]
 
 }
 export interface IWeeklyGoal extends IGoal {

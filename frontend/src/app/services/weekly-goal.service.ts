@@ -7,23 +7,23 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class WeeklyGoalService {
-  private annualGoalsUrl = 'http://localhost:8080/api/v1/weekly-goals';
+  private weeklyGoalsUrl = 'http://localhost:8080/api/v1/weekly-goals';
   constructor(private http: HttpClient) {}
 
   getGoals(): Observable<IWeeklyGoal[]> {
-    return this.http.get<IWeeklyGoal[]>(this.annualGoalsUrl);
+    return this.http.get<IWeeklyGoal[]>(this.weeklyGoalsUrl);
   }
-  create(annualGoal: IWeeklyGoal): Observable<IWeeklyGoal> {
-    return this.http.post<IWeeklyGoal>(`${this.annualGoalsUrl}`, annualGoal);
+  create(weeklyGoal: IWeeklyGoal): Observable<IWeeklyGoal> {
+    return this.http.post<IWeeklyGoal>(`${this.weeklyGoalsUrl}`, weeklyGoal);
   }
-  edit(id?: number, annualGoal?: IWeeklyGoal): Observable<IWeeklyGoal> {
+  edit(id?: number, weeklyGoal?: IWeeklyGoal): Observable<IWeeklyGoal> {
     return this.http.put<IWeeklyGoal>(
-      `${this.annualGoalsUrl}/${id}`,
-      annualGoal
+      `${this.weeklyGoalsUrl}/${id}`,
+      weeklyGoal
     );
   }
 
   delete(id: number) {
-    return this.http.delete(`${this.annualGoalsUrl}/${id}`);
+    return this.http.delete(`${this.weeklyGoalsUrl}/${id}`);
   }
 }

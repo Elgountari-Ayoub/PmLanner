@@ -3,26 +3,33 @@ import { Injectable } from '@angular/core';
 import { IMonthlyGoal } from '../Models/interfaces';
 import { Observable } from 'rxjs';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MonthlyGoalService {
   private monthlyGoalsUrl = 'http://localhost:8080/api/v1/monthly-goals';
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient) {}
 
-  getMonthlyGoals() : Observable<IMonthlyGoal[]>{
+  getMonthlyGoals(): Observable<IMonthlyGoal[]> {
     return this.http.get<IMonthlyGoal[]>(this.monthlyGoalsUrl);
   }
-  getMonthlyGoalsByAnnualGoalId(id: number) : Observable<IMonthlyGoal[]>{
-    return this.http.get<IMonthlyGoal[]>(`${this.monthlyGoalsUrl}/annualGoal/${id}`);
+  getMonthlyGoalsByAnnualGoalId(id: number): Observable<IMonthlyGoal[]> {
+    return this.http.get<IMonthlyGoal[]>(
+      `${this.monthlyGoalsUrl}/annualGoal/${id}`
+    );
+  }
+  getGoal(id: number): Observable<IMonthlyGoal> {
+    return this.http.get<IMonthlyGoal>(`${this.monthlyGoalsUrl}/${id}`);
   }
 
   create(annualGoal: IMonthlyGoal): Observable<IMonthlyGoal> {
     return this.http.post<IMonthlyGoal>(`${this.monthlyGoalsUrl}`, annualGoal);
   }
   edit(id?: number, annualGoal?: IMonthlyGoal): Observable<IMonthlyGoal> {
-    return this.http.put<IMonthlyGoal>(`${this.monthlyGoalsUrl}/${id}`, annualGoal);
+    return this.http.put<IMonthlyGoal>(
+      `${this.monthlyGoalsUrl}/${id}`,
+      annualGoal
+    );
   }
 
   delete(id: number) {

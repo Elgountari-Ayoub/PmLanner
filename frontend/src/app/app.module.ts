@@ -17,11 +17,14 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import {MatChipsModule} from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { LandingComponent } from './components/landing/landing.component';
-import { MonthlyGoalComponent } from './components/monthly-goal/monthly-goal.component';
 import { AnnualGoalDetailsComponent } from './components/annualGoals/annual-goal-details/annual-goal-details.component';
 import { AnnualGoalComponent } from './components/annualGoals/annual-goal/annual-goal.component';
+import { MonthlyGoalDetailsComponent } from './components/monthlyGoals/monthly-goal-details/monthly-goal-details.component';
+import { MonthlyGoalComponent } from './components/monthlyGoals/monthly-goal/monthly-goal.component';
+import { WeeklyGoalComponent } from './components/weeklyGoals/weekly-goal/weekly-goal.component';
+import { WeeklyGoalDetailsComponent } from './components/weeklyGoals/weekly-goal-details/weekly-goal-details.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,9 @@ import { AnnualGoalComponent } from './components/annualGoals/annual-goal/annual
     AnnualGoalComponent,
     AnnualGoalDetailsComponent,
     MonthlyGoalComponent,
+    MonthlyGoalDetailsComponent,
+    WeeklyGoalComponent,
+    WeeklyGoalDetailsComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -43,18 +49,16 @@ import { AnnualGoalComponent } from './components/annualGoals/annual-goal/annual
     FormsModule,
     ReactiveFormsModule,
     MatTabsModule,
-    MatCardModule, MatDividerModule, 
-    MatButtonModule, 
+    MatCardModule,
+    MatDividerModule,
+    MatButtonModule,
     MatProgressBarModule,
     MatDividerModule,
-    MatMenuModule, 
-    MatIconModule, MatChipsModule
-
+    MatMenuModule,
+    MatIconModule,
+    MatChipsModule,
   ],
-  providers: [
-    DatePipe, // Add DatePipe to the providers array
-    // other services or providers
-  ],
+  providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

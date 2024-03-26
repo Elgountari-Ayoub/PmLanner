@@ -44,7 +44,7 @@ export class AnnualGoalDetailsComponent {
     this.getAnnualGoal(this.annualGoalId);
     this.getAnnualGoals();
 
-    this.getMonthlyGoals();
+    this.getMonthlyGoalsByAnnualGoalId();
 
     this.initMonthlyGoalCreateForm();
     this.initMonthlyGoalEditForm();
@@ -81,7 +81,7 @@ export class AnnualGoalDetailsComponent {
 
   monthlyGoals: IMonthlyGoal[] = [];
   // ################################ GET MONTHYL GOAL ################################
-  getMonthlyGoals() {
+  getMonthlyGoalsByAnnualGoalId() {
     if (this.annualGoalId)
       this.monthlyGoalService
         .getMonthlyGoalsByAnnualGoalId(this.annualGoalId)
@@ -140,7 +140,7 @@ export class AnnualGoalDetailsComponent {
       const formData = this.monthlyGoalCreateForm.value;
       this.monthlyGoalService.create(formData).subscribe({
         next: (goal) => {
-          this.getMonthlyGoals();
+          this.getMonthlyGoalsByAnnualGoalId();
           this.initMonthlyGoalCreateForm();
         },
         error: (error) => {
@@ -230,7 +230,7 @@ export class AnnualGoalDetailsComponent {
 
       this.monthlyGoalService.edit(this.monthlyGoal?.id, formData).subscribe({
         next: (goal) => {
-          this.getMonthlyGoals();
+          this.getMonthlyGoalsByAnnualGoalId();
           this.hideMonthlyGoalEditModal();
         },
         error: (error) => {
