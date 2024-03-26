@@ -19,9 +19,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatChipsModule} from '@angular/material/chips';
 import { LandingComponent } from './components/landing/landing.component';
-import { AnnualGoalComponent } from './components/annual-goal/annual-goal.component';
 import { MonthlyGoalComponent } from './components/monthly-goal/monthly-goal.component';
-import { AnnualGoalMonthlyGoalsComponent } from './components/annual-goal-monthly-goals/annual-goal-monthly-goals.component';
+import { AnnualGoalDetailsComponent } from './components/annualGoals/annual-goal-details/annual-goal-details.component';
+import { AnnualGoalComponent } from './components/annualGoals/annual-goal/annual-goal.component';
 
 @NgModule({
   declarations: [
@@ -31,8 +31,8 @@ import { AnnualGoalMonthlyGoalsComponent } from './components/annual-goal-monthl
     DashboardComponent,
     LandingComponent,
     AnnualGoalComponent,
+    AnnualGoalDetailsComponent,
     MonthlyGoalComponent,
-    AnnualGoalMonthlyGoalsComponent
   ],
   imports: [
     BrowserAnimationsModule,

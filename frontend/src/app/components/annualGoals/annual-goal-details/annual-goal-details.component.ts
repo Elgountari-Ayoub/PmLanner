@@ -1,5 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import {
   IAnnualGoal,
@@ -12,11 +17,11 @@ import { MonthlyGoalService } from 'src/app/services/monthly-goal.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-annual-goal-monthly-goals',
-  templateUrl: './annual-goal-monthly-goals.component.html',
-  styleUrls: ['./annual-goal-monthly-goals.component.css'],
+  selector: 'app-annual-goal-details',
+  templateUrl: './annual-goal-details.component.html',
+  styleUrls: ['./annual-goal-details.component.css'],
 })
-export class AnnualGoalMonthlyGoalsComponent implements OnInit {
+export class AnnualGoalDetailsComponent {
   @Input() annualGoalId!: number;
 
   annualGoals: IAnnualGoal[] = [];
@@ -32,15 +37,17 @@ export class AnnualGoalMonthlyGoalsComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
   ngOnInit(): void {
-    this.getAnnualGoals();
-    this.getMonthlyGoals();
-    this.initMonthlyGoalCreateForm();
-    this.initMonthlyGoalEditForm();
-
     this.route.params.subscribe((params) => {
       this.annualGoalId = params['annualGoalId'];
     });
+
     this.getAnnualGoal(this.annualGoalId);
+    this.getAnnualGoals();
+
+    this.getMonthlyGoals();
+
+    this.initMonthlyGoalCreateForm();
+    this.initMonthlyGoalEditForm();
   }
 
   // ANNUAL GOALS
@@ -58,6 +65,7 @@ export class AnnualGoalMonthlyGoalsComponent implements OnInit {
     this.annualGoalService.getGoal(annualGoalId).subscribe({
       next: (data) => {
         this.annualGoal = data as IAnnualGoal;
+        this.initMonthlyGoalCreateForm();
       },
       error: (err) => {
         console.log(err);
@@ -74,9 +82,9 @@ export class AnnualGoalMonthlyGoalsComponent implements OnInit {
   monthlyGoals: IMonthlyGoal[] = [];
   // ################################ GET MONTHYL GOAL ################################
   getMonthlyGoals() {
-    if (this.annualGoal)
+    if (this.annualGoalId)
       this.monthlyGoalService
-        .getMonthlyGoalsByAnnualGoalId(this.annualGoal.id)
+        .getMonthlyGoalsByAnnualGoalId(this.annualGoalId)
         .subscribe({
           next: (data) => {
             this.monthlyGoals = data as IMonthlyGoal[];
@@ -98,7 +106,7 @@ export class AnnualGoalMonthlyGoalsComponent implements OnInit {
       priority: ['', Validators.required],
       status: ['TODO', Validators.required],
       progress: [0, Validators.required],
-      annualGoal: ['', Validators.required],
+      annualGoal: [this.annualGoal ? this.annualGoal : ''],
     });
   }
   showMonthlyGoalCreateModal() {
@@ -122,15 +130,18 @@ export class AnnualGoalMonthlyGoalsComponent implements OnInit {
       tempElement?.remove();
     }
   }
+
   createMonthlyGoal() {
+    console.log(this.annualGoal);
+
     if (this.monthlyGoalCreateForm.valid) {
       console.log(this.monthlyGoalCreateForm.value);
-
+      // this.monthlyGoalCreateForm.controls['annualGoal'] = this.annualGoal;
       const formData = this.monthlyGoalCreateForm.value;
       this.monthlyGoalService.create(formData).subscribe({
         next: (goal) => {
           this.getMonthlyGoals();
-          this.monthlyGoalCreateForm.reset(); // Optionally reset the form after successful creation
+          this.initMonthlyGoalCreateForm();
         },
         error: (error) => {
           console.log(error);
@@ -138,6 +149,8 @@ export class AnnualGoalMonthlyGoalsComponent implements OnInit {
       });
       console.log('Form submitted:', formData);
     } else {
+      console.log(this.monthlyGoalCreateForm.value);
+
       console.log('Form is invalid');
     }
   }
@@ -231,7 +244,7 @@ export class AnnualGoalMonthlyGoalsComponent implements OnInit {
     }
   }
 
-  // ################################ DELETE ANNUAL GOAL ################################
+  // ################################ DELETE MONTHLY GOAL ################################
 
   @Output() goalDeleted = new EventEmitter<void>();
   deleteGoal(id: number) {

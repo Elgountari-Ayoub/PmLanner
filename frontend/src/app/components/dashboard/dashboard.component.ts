@@ -36,9 +36,9 @@ export class DashboardComponent implements OnInit {
     this.initMonthlyGoalCreateForm();
     this.initMonthlyGoalEditForm();
 
-    this.getWeeklyGoals();
-    this.initWeeklyGoalCreateForm();
-    this.initWeeklyGoalEditForm();
+    // this.getWeeklyGoals();
+    // this.initWeeklyGoalCreateForm();
+    // this.initWeeklyGoalEditForm();
   }
 
   // ##############################################################################
@@ -75,18 +75,24 @@ export class DashboardComponent implements OnInit {
       progress: [0, Validators.required],
     });
   }
-  showCreateGoalModal() {
+  showAnnualGoalCreateModal() {
     let editModal = document.getElementById('create-modal');
     if (editModal != null) {
       editModal.classList.remove('hidden');
       editModal.classList.add('flex');
+      document.body.insertAdjacentHTML(
+        'beforeend',
+        '<div modal-backdrop="" id="tempElement" class="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40"></div>'
+      );
     }
   }
-  hideCreateGoalModal() {
+  hideAnnualGoalCreateModal() {
     let editModal = document.getElementById('create-modal');
     if (editModal != null) {
       editModal.classList.remove('flex');
       editModal.classList.add('hidden');
+      let tempElement = document.getElementById('tempElement');
+      tempElement?.remove();
     }
   }
 
@@ -256,9 +262,8 @@ export class DashboardComponent implements OnInit {
       const formData = this.monthlyGoalCreateForm.value;
       this.monthlyGoalService.create(formData).subscribe({
         next: (goal) => {
-          this.initMonthlyGoalCreateForm()
+          this.initMonthlyGoalCreateForm();
           this.getMonthlyGoals();
-          // this.monthlyGoalCreateForm.reset(); // Optionally reset the form after successful creation
         },
         error: (error) => {
           console.log(error);
@@ -422,7 +427,7 @@ export class DashboardComponent implements OnInit {
       this.weeklyGoalService.create(formData).subscribe({
         next: (goal) => {
           this.getWeeklyGoals();
-          this.weeklyGoalCreateForm.reset(); // Optionally reset the form after successful creation
+          this.initWeeklyGoalCreateForm();
         },
         error: (error) => {
           console.log(error);

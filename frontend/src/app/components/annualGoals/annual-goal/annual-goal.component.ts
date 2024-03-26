@@ -3,9 +3,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IAnnualGoal, IPriority, IStatus } from 'src/app/Models/interfaces';
 import { AnnualGoalsService } from 'src/app/services/annual-goals.service';
-import { MonthlyGoalService } from 'src/app/services/monthly-goal.service';
 import Swal from 'sweetalert2';
-import { DashboardComponent } from '../dashboard/dashboard.component';
 
 @Component({
   selector: 'app-annual-goal',
@@ -84,3 +82,4 @@ export class AnnualGoalComponent implements OnInit {
     }
   }
 }
+0
