@@ -28,6 +28,10 @@ public class MonthlyGoalController {
     public ResponseEntity<List<MonthlyGoal_Annual_Weekly_GoalsDTO>> getAllMonthlyGoals() {
         return ResponseEntity.ok(monthlyGoalService.getAll());
     }
+    @GetMapping("/annualGoal/{id}")
+    public ResponseEntity<List<MonthlyGoal_Annual_Weekly_GoalsDTO>> getAllMonthlyGoalsByAnnualGoalId(@PathVariable long id) {
+        return ResponseEntity.ok(monthlyGoalService.getAllByAnnualGoalId(id));
+    }
 
     @PostMapping
     public ResponseEntity<Void> createMonthlyGoal(@RequestBody MonthlyGoal_Annual_Weekly_GoalsDTO monthlyGoalDTO) {

@@ -28,17 +28,23 @@ public class MonthlyGoalService implements MonthlyGoalDao {
     @Override
     public MonthlyGoal_Annual_Weekly_GoalsDTO get(long id) {
         MonthlyGoal existingGoal = this.findMonthlyGoalElseThrowException(id);
-        MonthlyGoal_Annual_Weekly_GoalsDTO monthlyGoalDTO = modelMapper.map(existingGoal, MonthlyGoal_Annual_Weekly_GoalsDTO.class);
-        return monthlyGoalDTO;
+        System.out.println(existingGoal.getWeeklyGoals().size());
+        return modelMapper.map(existingGoal, MonthlyGoal_Annual_Weekly_GoalsDTO.class);
     }
 
     @Override
     public List<MonthlyGoal_Annual_Weekly_GoalsDTO> getAll() {
-        List<MonthlyGoal> monthlyGoals = repository.findAll();
-        List<MonthlyGoal_Annual_Weekly_GoalsDTO> monthlyGoalDTOS = monthlyGoals.stream()
+        List<MonthlyGoal> monthlyGoals = repository.findAllByOrderByPriorityAscCreatedAt();
+        return monthlyGoals.stream()
                 .map(monthlyGoal -> modelMapper.map(monthlyGoal, MonthlyGoal_Annual_Weekly_GoalsDTO.class))
                 .collect(Collectors.toList());
-        return monthlyGoalDTOS;
+    }
+    @Override
+    public List<MonthlyGoal_Annual_Weekly_GoalsDTO> getAllByAnnualGoalId(long id) {
+        List<MonthlyGoal> monthlyGoals = repository.findAllByAnnualGoalId(id);
+        return monthlyGoals.stream()
+                .map(monthlyGoal -> modelMapper.map(monthlyGoal, MonthlyGoal_Annual_Weekly_GoalsDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -47,8 +53,6 @@ public class MonthlyGoalService implements MonthlyGoalDao {
         MonthlyGoal monthlyGoal = modelMapper.map(monthlyGoalDTO, MonthlyGoal.class);
         monthlyGoal.setAnnualGoal(annualGoal);
         repository.save(monthlyGoal);
-
-
     }
 
     @Override

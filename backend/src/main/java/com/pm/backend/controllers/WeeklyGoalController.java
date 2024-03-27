@@ -10,6 +10,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/weekly-goals")
+@CrossOrigin("*")
+
 public class WeeklyGoalController {
     private final WeeklyGoalDao weeklyGoalService;
 
