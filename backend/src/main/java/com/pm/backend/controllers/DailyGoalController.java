@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/daily-goals")
+@CrossOrigin("*")
 public class DailyGoalController {
     private final DailyGoalDao dailyGoalService;
 

@@ -1,27 +1,26 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IMonthlyGoal, IPriority, IStatus } from 'src/app/Models/interfaces';
-import { MonthlyGoalService } from 'src/app/services/monthly-goal.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IPriority, IStatus, IDailyGoal } from 'src/app/Models/interfaces';
+import { DailyGoalService } from 'src/app/services/daily-goal.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-monthly-goal',
-  templateUrl: './monthly-goal.component.html',
-  styleUrls: ['./monthly-goal.component.css'],
+  selector: 'app-daily-goal',
+  templateUrl: './daily-goal.component.html',
+  styleUrls: ['./daily-goal.component.css']
 })
-export class MonthlyGoalComponent {
-  @Input() monthlyGoal?: IMonthlyGoal;
+export class DailyGoalComponent implements OnInit {
+  @Input() dailyGoal!: IDailyGoal;
   @Input() index?: number;
 
-  constructor(private monthlyGoalService: MonthlyGoalService) {}
+  constructor(private dailyGoalService: DailyGoalService) {}
   ngOnInit(): void {}
 
-  // GOAL EDITIONEDIT GOAL EVENT EMITTER
+  // GOAL EDITION EDIT GOAL EVENT EMITTER
   @Output() showEditGoalModal = new EventEmitter<void>();
   showEditModal() {
     this.showEditGoalModal.emit();
   }
-
-  // ################################ DELETE ANNUAL GOAL ################################
+  // ################################ DELETE DAILY GOAL ################################
 
   @Output() goalDeleted = new EventEmitter<void>();
   deleteGoal(id: number) {
@@ -35,12 +34,12 @@ export class MonthlyGoalComponent {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.monthlyGoalService.delete(id).subscribe({
+        this.dailyGoalService.delete(id).subscribe({
           next: (data) => {
             this.goalDeleted.emit();
             Swal.fire(
               'Deleted!',
-              'Your monthly goal has been deleted.',
+              'Your daily goal has been deleted.',
               'success'
             );
           },

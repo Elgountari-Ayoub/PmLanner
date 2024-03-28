@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -15,7 +15,7 @@ import { WeeklyGoalService } from 'src/app/services/weekly-goal.service';
   templateUrl: './monthly-goal-details.component.html',
   styleUrls: ['./monthly-goal-details.component.css'],
 })
-export class MonthlyGoalDetailsComponent {
+export class MonthlyGoalDetailsComponent implements OnInit {
   @Input() monthlyGoalId!: number;
   monthlyGoal!: IMonthlyGoal;
   monthlyGoals: IMonthlyGoal[] = [];

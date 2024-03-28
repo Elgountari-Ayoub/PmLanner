@@ -30,4 +30,8 @@ export interface IMonthlyGoal extends IGoal {
 }
 export interface IWeeklyGoal extends IGoal {
     monthlyGoal: IMonthlyGoal
+    dailyGoals: IDailyGoal[]
+}
+export interface IDailyGoal extends IGoal {
+    weeklyGoal: IWeeklyGoal
 }

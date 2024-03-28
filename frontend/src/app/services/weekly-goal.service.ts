@@ -13,6 +13,10 @@ export class WeeklyGoalService {
   getGoals(): Observable<IWeeklyGoal[]> {
     return this.http.get<IWeeklyGoal[]>(this.weeklyGoalsUrl);
   }
+  getGoal(id: number): Observable<IWeeklyGoal> {
+    return this.http.get<IWeeklyGoal>(`${this.weeklyGoalsUrl}/${id}`);
+  }
+
   create(weeklyGoal: IWeeklyGoal): Observable<IWeeklyGoal> {
     return this.http.post<IWeeklyGoal>(`${this.weeklyGoalsUrl}`, weeklyGoal);
   }

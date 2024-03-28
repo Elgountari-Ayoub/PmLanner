@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./weekly-goal.component.css'],
 })
 export class WeeklyGoalComponent implements OnInit {
-  @Input() weeklyGoal?: IWeeklyGoal;
+  @Input() weeklyGoal!: IWeeklyGoal;
   @Input() index?: number;
 
   constructor(private weeklyGoalService: WeeklyGoalService) {}
@@ -39,7 +39,7 @@ export class WeeklyGoalComponent implements OnInit {
             this.goalDeleted.emit();
             Swal.fire(
               'Deleted!',
-              'Your annual goal has been deleted.',
+              'Your weekly goal has been deleted.',
               'success'
             );
           },

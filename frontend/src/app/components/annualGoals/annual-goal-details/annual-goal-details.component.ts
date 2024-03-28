@@ -263,7 +263,7 @@ export class AnnualGoalDetailsComponent {
             this.goalDeleted.emit();
             Swal.fire(
               'Deleted!',
-              'Your annual goal has been deleted.',
+              'Your monthly goal has been deleted.',
               'success'
             );
           },
