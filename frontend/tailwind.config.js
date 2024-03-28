@@ -6,13 +6,20 @@ module.exports = {
   ],
   theme: {
     extend: {
+      // dcbfff
       colors: {
-        'golden-goal': '#FFD700',
-        'silver-goal': '#C0C0C0',
-        'bronze-goal': '#CD7F32',
-        'golden-goal-light': '#ffe34d',
-        'silver-goal-light': '#cdcdcd',
-        'bronze-goal-light': '#d28c47',
+        'golden-goal': '#FFA07A',
+        'silver-goal': '#FFA07A',
+        'bronze-goal': '#FFA07A',
+        'golden-goal-light': '#FEBFA8',
+        'silver-goal-light': '#FEBFA8',
+        'bronze-goal-light': '#FEBFA8',
+        // 'golden-goal': '#FFD700',
+        // 'silver-goal': '#C0C0C0',
+        // 'bronze-goal': '#CD7F32',
+        // 'golden-goal-light': '#ffe34d',
+        // 'silver-goal-light': '#cdcdcd',
+        // 'bronze-goal-light': '#d28c47',
       },
       boxShadow: {
         // 'golden': '0rem 0rem .1rem .1rem theme("colors.golden-goal-shadow")',

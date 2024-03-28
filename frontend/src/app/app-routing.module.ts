@@ -17,7 +17,7 @@ const routes: Routes = [
     component: MonthlyGoalDetailsComponent,
   },
   {
-    path: 'weeklylyGoal/:weeklyGoalId',
+    path: 'weeklyGoal/:weeklyGoalId',
     component: WeeklyGoalDetailsComponent,
   },
   { path: '', component: LandingComponent },

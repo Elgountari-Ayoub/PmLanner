@@ -1,6 +1,5 @@
 package com.pm.backend.repositories;
 
-import com.pm.backend.entities.AnnualGoal;
 import com.pm.backend.entities.MonthlyGoal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -9,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface MonthlyGoalRepository extends JpaRepository<MonthlyGoal, Long> {
-    List<MonthlyGoal> findAllByOrderByPriorityAscCreatedAt();
-    List<MonthlyGoal> findAllByAnnualGoalId( long id);
+    List<MonthlyGoal> findAllByOrderByCreatedAt();
+    List<MonthlyGoal> findAllByAnnualGoalIdOrderByCreatedAt(long id);
 
 }

@@ -1,27 +1,28 @@
 <div
   *ngIf="dailyGoal"
-  class="p-4 rounded-lg flex flex-col justify-between gap-2 h-full cursor-pointer"
+  class="p-2 rounded-lg flex flex-col justify-between gap-2 h-full cursor-pointer"
   id="goal-card"
 >
   <div class="flex justify-between">
-    <span class="inline-block text-red-700">{{ dailyGoal.deadline }}</span>
     <span
-      class="inline-block rounded-lg p-2 italic"
-      [class]="getPriorityStyleClass(dailyGoal.priority)"
-      >{{ dailyGoal.priority | uppercase }}</span
+      class="inline-block rounded-lg p-1 italic"
+      [class]="getStatusStyleClass(dailyGoal.status)"
+      >{{ dailyGoal.status | uppercase }}</span
     >
+    <span class="inline-block text-red-700">{{ dailyGoal.deadline }}</span>
   </div>
-  <h2
-    class="text-center m-4 sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl hover:underline hover:text-blue-500"
-    [routerLink]="['/weeklylyGoal', dailyGoal.id]"
+  <span
+    class="sm:text-sm md:text-sm lg:text-sm xl:text-sm hover:underline hover:text-blue-500"
+    [routerLink]="['/weeklyGoal', dailyGoal.id]"
   >
     {{ dailyGoal.title | titlecase }}
-  </h2>
-  <p class="text-sm">{{ dailyGoal.description }}</p>
+  </span>
 
+  
   <div class="flex justify-between">
-    <span class="inline-block">{{ dailyGoal.progress * 10 }}%</span>
-    <div class="flex justify-between gap-2" id="goal-options">
+    <p class="text-sm text-gray-600 ">{{ dailyGoal.description }}</p>
+    <!-- <span class="inline-block">{{ dailyGoal.progress * 10 }}%</span> -->
+    <div class="flex justify-between gap-2 self-end ml-auto" id="goal-options">
       <mat-icon
         (click)="showEditModal()"
         class="text-blue-500 cursor-pointer"
@@ -40,8 +41,4 @@
       ></mat-icon>
     </div>
   </div>
-  <mat-progress-bar
-    mode="determinate"
-    [value]="dailyGoal.progress * 10"
-  ></mat-progress-bar>
 </div>

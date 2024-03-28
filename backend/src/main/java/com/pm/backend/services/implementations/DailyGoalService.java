@@ -33,7 +33,7 @@ public class DailyGoalService implements DailyGoalDao {
 
     @Override
     public List<DailyGoal_WeeklyGoalDTO> getAll() {
-        List<DailyGoal> dailyGoals = repository.findAll();
+        List<DailyGoal> dailyGoals = repository.findAllByOrderByCreatedAt();
         return dailyGoals.stream()
                 .map(dailyGoal -> modelMapper.map(dailyGoal, DailyGoal_WeeklyGoalDTO.class))
                 .collect(Collectors.toList());

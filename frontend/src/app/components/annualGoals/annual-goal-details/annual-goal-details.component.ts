@@ -1,10 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import {
   IAnnualGoal,
@@ -132,10 +127,7 @@ export class AnnualGoalDetailsComponent {
   }
 
   createMonthlyGoal() {
-    console.log(this.annualGoal);
-
     if (this.monthlyGoalCreateForm.valid) {
-      console.log(this.monthlyGoalCreateForm.value);
       // this.monthlyGoalCreateForm.controls['annualGoal'] = this.annualGoal;
       const formData = this.monthlyGoalCreateForm.value;
       this.monthlyGoalService.create(formData).subscribe({
@@ -187,7 +179,7 @@ export class AnnualGoalDetailsComponent {
         Validators.required,
       ],
       annualGoal: [
-        this.monthlyGoal ? this.annualGoal : '',
+        this.annualGoal ? this.annualGoal : '',
         Validators.required,
       ],
     });
@@ -196,9 +188,6 @@ export class AnnualGoalDetailsComponent {
   showMonthlyGoalEditModal(monthylGoal: IMonthlyGoal) {
     this.monthlyGoal = monthylGoal;
     this.initMonthlyGoalEditForm();
-    console.log(this.monthlyGoalEditForm.valid);
-    console.log(this.monthlyGoalEditForm.value);
-
     let editModal = document.getElementById('monthly-goal-edit-modal');
     if (editModal != null) {
       editModal.classList.remove('hidden');

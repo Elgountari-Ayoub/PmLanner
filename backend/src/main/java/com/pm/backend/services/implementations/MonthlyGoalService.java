@@ -6,6 +6,7 @@ import com.pm.backend.entities.MonthlyGoal;
 import com.pm.backend.exceptions.ResourceNotFoundException;
 import com.pm.backend.repositories.AnnualGoalRepository;
 import com.pm.backend.repositories.MonthlyGoalRepository;
+import com.pm.backend.repositories.WeeklyGoalRepository;
 import com.pm.backend.services.interfaces.MonthlyGoalDao;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -17,11 +18,13 @@ import java.util.stream.Collectors;
 public class MonthlyGoalService implements MonthlyGoalDao {
     private final MonthlyGoalRepository repository;
     private final AnnualGoalRepository annualGoalRepository;
+    private final WeeklyGoalRepository weeklyGoalRepository;
     private final ModelMapper modelMapper;
 
-    public MonthlyGoalService(MonthlyGoalRepository repository, AnnualGoalRepository annualGoalRepository, ModelMapper modelMapper) {
+    public MonthlyGoalService(MonthlyGoalRepository repository, AnnualGoalRepository annualGoalRepository, WeeklyGoalRepository weeklyGoalRepository, ModelMapper modelMapper) {
         this.repository = repository;
         this.annualGoalRepository = annualGoalRepository;
+        this.weeklyGoalRepository = weeklyGoalRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -29,19 +32,20 @@ public class MonthlyGoalService implements MonthlyGoalDao {
     public MonthlyGoal_Annual_Weekly_GoalsDTO get(long id) {
         MonthlyGoal existingGoal = this.findMonthlyGoalElseThrowException(id);
         System.out.println(existingGoal.getWeeklyGoals().size());
+        existingGoal.setWeeklyGoals(weeklyGoalRepository.findAllByMonthlyGoalIdOrderByCreatedAt(existingGoal.getId()));
         return modelMapper.map(existingGoal, MonthlyGoal_Annual_Weekly_GoalsDTO.class);
     }
 
     @Override
     public List<MonthlyGoal_Annual_Weekly_GoalsDTO> getAll() {
-        List<MonthlyGoal> monthlyGoals = repository.findAllByOrderByPriorityAscCreatedAt();
+        List<MonthlyGoal> monthlyGoals = repository.findAllByOrderByCreatedAt();
         return monthlyGoals.stream()
                 .map(monthlyGoal -> modelMapper.map(monthlyGoal, MonthlyGoal_Annual_Weekly_GoalsDTO.class))
                 .collect(Collectors.toList());
     }
     @Override
     public List<MonthlyGoal_Annual_Weekly_GoalsDTO> getAllByAnnualGoalId(long id) {
-        List<MonthlyGoal> monthlyGoals = repository.findAllByAnnualGoalId(id);
+        List<MonthlyGoal> monthlyGoals = repository.findAllByAnnualGoalIdOrderByCreatedAt(id);
         return monthlyGoals.stream()
                 .map(monthlyGoal -> modelMapper.map(monthlyGoal, MonthlyGoal_Annual_Weekly_GoalsDTO.class))
                 .collect(Collectors.toList());
@@ -79,7 +83,6 @@ public class MonthlyGoalService implements MonthlyGoalDao {
     @Override
     public void delete(long id) {
         MonthlyGoal existingGoal = this.findMonthlyGoalElseThrowException(id);
-
         repository.delete(existingGoal);
     }
 

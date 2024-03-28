@@ -62,7 +62,6 @@ public class AnnualGoalService implements AnnualGoalDao {
     @Override
     public void delete(long id) {
         AnnualGoal existingGoal = this.findAnnualGoalElseThrowException(id);
-
         repository.delete(existingGoal);
     }
 

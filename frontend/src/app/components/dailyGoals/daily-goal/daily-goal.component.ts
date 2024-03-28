@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-daily-goal',
   templateUrl: './daily-goal.component.html',
-  styleUrls: ['./daily-goal.component.css']
+  styleUrls: ['./daily-goal.component.css'],
 })
 export class DailyGoalComponent implements OnInit {
   @Input() dailyGoal!: IDailyGoal;
@@ -69,11 +69,11 @@ export class DailyGoalComponent implements OnInit {
   getStatusStyleClass(status: IStatus): string {
     switch (status) {
       case 'TODO':
-        return 'bg-gray-300';
+        return 'text-white bg-red-700';
       case 'IN_PROGRESS':
-        return 'bg-blue-500';
+        return 'text-white bg-green-700';
       case 'DONE':
-        return 'bg-green-500 text-white';
+        return 'text-white bg-gray-600';
       default:
         return '';
     }

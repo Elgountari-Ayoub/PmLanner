@@ -55,7 +55,9 @@ export class MonthlyGoalDetailsComponent implements OnInit {
     this.monthlyGoalService.getGoal(id).subscribe({
       next: (data) => {
         this.monthlyGoal = data as IMonthlyGoal;
+        console.log(this.monthlyGoal);
         this.initWeeklyGoalCreateForm();
+        this.initWeeklyGoalEditForm();
       },
       error: (err) => {
         console.log(err);
@@ -79,13 +81,13 @@ export class MonthlyGoalDetailsComponent implements OnInit {
   initWeeklyGoalCreateForm() {
     this.weeklyGoalCreateForm = this.formBuilder.group({
       title: ['', Validators.required],
-      description: ['', Validators.required],
+      description: ['', ],
       deadline: ['', Validators.required],
       priority: ['', Validators.required],
       status: ['TODO', Validators.required],
       progress: [0, Validators.required],
       // monthlyGoal: [this.monthlyGoal ? this.monthlyGoal : ''],
-      monthlyGoal: {'id': this.monthlyGoal ? this.monthlyGoal.id : ''},
+      monthlyGoal: { id: this.monthlyGoal ? this.monthlyGoal.id : '' },
     });
   }
 
@@ -121,9 +123,9 @@ export class MonthlyGoalDetailsComponent implements OnInit {
         next: (goal) => {
           this.getMonthlyGoal(this.monthlyGoalId);
           this.initWeeklyGoalCreateForm();
+          this.hideWeeklyGoalCreatelModal();
         },
         error: (error) => {
-          alert();
           console.log(error);
         },
       });
@@ -165,7 +167,7 @@ export class MonthlyGoalDetailsComponent implements OnInit {
         Validators.required,
       ],
       monthlyGoal: [
-        this.weeklyGoal ? this.weeklyGoal.monthlyGoal : '',
+        this.monthlyGoal ? this.monthlyGoal : 'hi',
         Validators.required,
       ],
     });
@@ -183,6 +185,37 @@ export class MonthlyGoalDetailsComponent implements OnInit {
         'beforeend',
         '<div modal-backdrop="" id="tempElement" class="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40"></div>'
       );
+    }
+  }
+  hideWeeklyGoalEditlModal() {
+    let editModal = document.getElementById('weekly-goal-edit-modal');
+    if (editModal != null) {
+      editModal.classList.remove('flex');
+      editModal.classList.add('hidden');
+      let tempElement = document.getElementById('tempElement');
+      tempElement?.remove();
+    }
+  }
+
+  editWeeklyGoal() {
+    console.log(this.weeklyGoalEditForm.value);
+    if (this.weeklyGoalEditForm.valid) {
+      const formData = this.weeklyGoalEditForm.value;
+
+      this.weeklyGoalService.edit(this.weeklyGoal?.id, formData).subscribe({
+        next: (goal) => {
+          this.getMonthlyGoal(this.monthlyGoalId);
+          this.initWeeklyGoalEditForm();
+          this.hideWeeklyGoalEditlModal();
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+      console.log('Form submitted:', formData);
+    } else {
+      // Handle form validation errors
+      console.log('Form is invalid');
     }
   }
 

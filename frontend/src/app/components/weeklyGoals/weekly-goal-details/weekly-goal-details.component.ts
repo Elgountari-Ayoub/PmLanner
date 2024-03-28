@@ -84,13 +84,12 @@ export class WeeklyGoalDetailsComponent implements OnInit {
       priority: ['', Validators.required],
       status: ['TODO', Validators.required],
       progress: [0, Validators.required],
-      // weeklyGoal: [this.weeklyGoal ? this.weeklyGoal : ''],
       weeklyGoal: { id: this.weeklyGoal ? this.weeklyGoal.id : '' },
     });
   }
 
   showDailyGoalCreateModal() {
-    let editModal = document.getElementById('weekly-goal-create-modal');
+    let editModal = document.getElementById('daily-goal-create-modal');
 
     if (editModal != null) {
       editModal.classList.remove('hidden');
@@ -103,7 +102,7 @@ export class WeeklyGoalDetailsComponent implements OnInit {
   }
 
   hideDailyGoalCreatelModal() {
-    let editModal = document.getElementById('weekly-goal-create-modal');
+    let editModal = document.getElementById('daily-goal-create-modal');
     if (editModal != null) {
       editModal.classList.remove('flex');
       editModal.classList.add('hidden');
@@ -162,7 +161,7 @@ export class WeeklyGoalDetailsComponent implements OnInit {
         Validators.required,
       ],
       weeklyGoal: [
-        this.dailyGoal ? this.dailyGoal.weeklyGoal : '',
+        this.weeklyGoal ? this.weeklyGoal : '',
         Validators.required,
       ],
     });
@@ -171,7 +170,7 @@ export class WeeklyGoalDetailsComponent implements OnInit {
   showDailyGoalEditModal(dailyGoal: IDailyGoal) {
     this.dailyGoal = dailyGoal;
     this.initDailyGoalEditForm();
-    let editModal = document.getElementById('weekly-goal-edit-modal');
+    let editModal = document.getElementById('daily-goal-edit-modal');
     if (editModal != null) {
       editModal.classList.remove('hidden');
       editModal.classList.add('flex');
@@ -180,6 +179,39 @@ export class WeeklyGoalDetailsComponent implements OnInit {
         'beforeend',
         '<div modal-backdrop="" id="tempElement" class="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40"></div>'
       );
+    }
+  }
+
+  hideDailyGoalEditlModal() {
+    let editModal = document.getElementById('daily-goal-edit-modal');
+    if (editModal != null) {
+      editModal.classList.remove('flex');
+      editModal.classList.add('hidden');
+      let tempElement = document.getElementById('tempElement');
+      tempElement?.remove();
+    }
+  }
+
+
+  editDailyGoal() {
+    console.log(this.dailyGoalEditForm.value);
+    if (this.dailyGoalEditForm.valid) {
+      const formData = this.dailyGoalEditForm.value;
+
+      this.dailyGoalService.edit(this.dailyGoal?.id, formData).subscribe({
+        next: (goal) => {
+          this.getWeeklyGoal(this.weeklyGoalId);
+          this.initDailyGoalEditForm();
+          this.hideDailyGoalEditlModal();
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+      console.log('Form submitted:', formData);
+    } else {
+      // Handle form validation errors
+      console.log('Form is invalid');
     }
   }
 
