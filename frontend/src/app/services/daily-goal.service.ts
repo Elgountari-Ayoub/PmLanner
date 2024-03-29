@@ -16,8 +16,8 @@ export class DailyGoalService {
   getGoal(id: number): Observable<IDailyGoal> {
     return this.http.get<IDailyGoal>(`${this.dailyGoalsUrl}/${id}`);
   }
-  getTodayGoals(): Observable<IDailyGoal> {
-    return this.http.get<IDailyGoal>(`${this.dailyGoalsUrl}/today`);
+  getTodayGoals(): Observable<IDailyGoal[]> {
+    return this.http.get<IDailyGoal[]>(`${this.dailyGoalsUrl}/today`);
   }
   create(dailyGoal: IDailyGoal): Observable<IDailyGoal> {
     return this.http.post<IDailyGoal>(`${this.dailyGoalsUrl}`, dailyGoal);

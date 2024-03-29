@@ -38,19 +38,18 @@ export class DashboardComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {}
   ngOnInit(): void {
+    
     this.getAnnualGoals();
     this.initAnnualGoalCreateForm();
     this.initAnnualGoalEditForm();
-
+    
     this.getMonthlyGoals();
     this.initMonthlyGoalCreateForm();
     this.initMonthlyGoalEditForm();
-
+    
     this.getWeeklyGoals();
     this.initWeeklyGoalCreateForm();
     this.initWeeklyGoalEditForm();
-
-    console.log(this.weeklyGoals);
 
     this.getTodayGoals();
     this.initDailyGoalCreateForm();
@@ -65,7 +64,7 @@ export class DashboardComponent implements OnInit {
 
   todayGoals: IDailyGoal[] = [];
   getTodayGoals() {
-    this.dailyGoalService.getGoals().subscribe({
+    this.dailyGoalService.getTodayGoals().subscribe({
       next: (data) => {
         this.todayGoals = data as IDailyGoal[];
         this.todayGoals_Nested = this.generatePyramidRows(this.todayGoals);
@@ -152,7 +151,6 @@ export class DashboardComponent implements OnInit {
           this.initDailyGoalCreateForm();
         },
         error: (error) => {
-          alert();
           console.log(error);
         },
       });
@@ -587,7 +585,6 @@ export class DashboardComponent implements OnInit {
     this.weeklyGoalService.getGoals().subscribe({
       next: (data) => {
         console.log('data', data);
-        
         this.weeklyGoals = data as IWeeklyGoal[];
       },
       error: (err) => {

@@ -808,21 +808,20 @@
                   </div>
                 </div>
               </div>
-              <!-- weekly Goals select -->
-              <div *ngIf="weeklyGoals && weeklyGoals.length > 1">
+              <div *ngIf="weeklyGoals">
                 <label
                   for="weklyGoals"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Weekly Goals</label
                 >
                 <select
-                  formControlName="weeklyGoals"
+                  formControlName="weeklyGoal"
                   id="weeklyGoals"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder"
                 >
                   <option
-                    *ngFor="let weeklyGoal of weeklyGoals"
-                    [value]="weeklyGoal"
+                  *ngFor="let weeklyGoal of weeklyGoals"
+                    [ngValue]="weeklyGoal"
                   >
                     {{ weeklyGoal.title }}
                   </option>
@@ -871,7 +870,7 @@
           <div *ngFor="let row of todayGoals_Nested; let i = index" class="m-4">
             <div class="grid gap-4 mt-4" [class]="getGridColClass(row.length)">
               <app-daily-goal
-                *ngFor="let todayGoal of todayGoals"
+                *ngFor="let todayGoal of row"
                 [dailyGoal]="todayGoal"
                 [index]="i"
                 (goalDeleted)="getTodayGoals()"
