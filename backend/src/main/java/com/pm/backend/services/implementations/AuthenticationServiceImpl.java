@@ -5,12 +5,17 @@ import com.pm.backend.dao.request.SignUpRequest;
 import com.pm.backend.dao.request.SigninRequest;
 import com.pm.backend.dao.response.JwtAuthenticationResponse;
 import com.pm.backend.entities.User;
+import com.pm.backend.exceptions.ResourceNotFoundException;
 import com.pm.backend.repositories.UserRepository;
 import com.pm.backend.services.interfaces.AuthenticationService;
 import com.pm.backend.services.interfaces.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +48,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var jwt = jwtService.generateToken(user);
         System.out.println(jwt);
         return JwtAuthenticationResponse.builder().token(jwt).build();
+    }
+
+    @Override
+    public User getAuthUser() {
+        Authentication authentication = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+
+        if (authentication == null &&
+        !authentication.isAuthenticated() &&
+        authentication instanceof AnonymousAuthenticationToken)
+        throw new ResourceNotFoundException("User not authenticated");
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        return userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("USER_NOT_FOUND_MESSAGE_EXCEPTION"));
     }
 }

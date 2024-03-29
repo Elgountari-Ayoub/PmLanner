@@ -7,7 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { NavbarComponent } from './components/includes/navbar/navbar.component';
 import { SidebarComponent } from './components/includes/sidebar/sidebar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CommonModule, DatePipe } from '@angular/common';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -26,6 +26,9 @@ import { MonthlyGoalComponent } from './components/monthlyGoals/monthly-goal/mon
 import { WeeklyGoalComponent } from './components/weeklyGoals/weekly-goal/weekly-goal.component';
 import { WeeklyGoalDetailsComponent } from './components/weeklyGoals/weekly-goal-details/weekly-goal-details.component';
 import { DailyGoalComponent } from './components/dailyGoals/daily-goal/daily-goal.component';
+import { SignupComponent } from './components/auth/signup/signup.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { AuthorizationInterceptor } from './interceptors/authorization/authorization.interceptor';
 
 @NgModule({
   declarations: [
@@ -41,6 +44,8 @@ import { DailyGoalComponent } from './components/dailyGoals/daily-goal/daily-goa
     WeeklyGoalComponent,
     WeeklyGoalDetailsComponent,
     DailyGoalComponent,
+    SignupComponent,
+    LoginComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -60,7 +65,9 @@ import { DailyGoalComponent } from './components/dailyGoals/daily-goal/daily-goa
     MatIconModule,
     MatChipsModule,
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

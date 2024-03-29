@@ -2,11 +2,13 @@ package com.pm.backend.services.implementations;
 
 import com.pm.backend.dtos.weeklyGoalDtos.WeeklyGoal_Monthly_Daily_GoalsDTO;
 import com.pm.backend.entities.MonthlyGoal;
+import com.pm.backend.entities.User;
 import com.pm.backend.entities.WeeklyGoal;
 import com.pm.backend.exceptions.ResourceNotFoundException;
 import com.pm.backend.repositories.DailyGoalRepository;
 import com.pm.backend.repositories.MonthlyGoalRepository;
 import com.pm.backend.repositories.WeeklyGoalRepository;
+import com.pm.backend.services.interfaces.AuthenticationService;
 import com.pm.backend.services.interfaces.WeeklyGoalDao;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -20,12 +22,19 @@ public class WeeklyGoalService implements WeeklyGoalDao {
     private MonthlyGoalRepository monthlyGoalRepository;
     private DailyGoalRepository dailyGoalRepository;
     private ModelMapper modelMapper;
+    private final AuthenticationService authenticationService;
+    private final User authUser;
 
-    public WeeklyGoalService(WeeklyGoalRepository repository, MonthlyGoalRepository monthlyGoalRepository, DailyGoalRepository dailyGoalRepository, ModelMapper modelMapper) {
+    public WeeklyGoalService(
+            WeeklyGoalRepository repository, MonthlyGoalRepository monthlyGoalRepository,
+            DailyGoalRepository dailyGoalRepository, AuthenticationService authenticationService,
+            ModelMapper modelMapper) {
         this.repository = repository;
         this.monthlyGoalRepository = monthlyGoalRepository;
         this.dailyGoalRepository = dailyGoalRepository;
         this.modelMapper = modelMapper;
+        this.authenticationService = authenticationService;
+        this.authUser = authenticationService.getAuthUser();
     }
 
     @Override
@@ -39,11 +48,10 @@ public class WeeklyGoalService implements WeeklyGoalDao {
 
     @Override
     public List<WeeklyGoal_Monthly_Daily_GoalsDTO> getAll() {
-        List<WeeklyGoal> weeklyGoals = repository.findAllByOrderByCreatedAt();
-        List<WeeklyGoal_Monthly_Daily_GoalsDTO> weeklyGoalDTOS = weeklyGoals.stream()
+        List<WeeklyGoal> weeklyGoals = repository.findAllByUser_IdOrderByCreatedAt(this.authUser.getId());
+        return weeklyGoals.stream()
                 .map(weeklyGoal -> modelMapper.map(weeklyGoal, WeeklyGoal_Monthly_Daily_GoalsDTO.class))
                 .collect(Collectors.toList());
-        return weeklyGoalDTOS;
     }
 
     @Override
@@ -51,6 +59,7 @@ public class WeeklyGoalService implements WeeklyGoalDao {
         MonthlyGoal monthlyGoal = findMonthlyGoalElseThrowException(weeklyGoalDTO.getMonthlyGoal().getId());
         WeeklyGoal weeklyGoal = modelMapper.map(weeklyGoalDTO, WeeklyGoal.class);
         weeklyGoal.setMonthlyGoal(monthlyGoal);
+        weeklyGoal.setUser(this.authUser);
         repository.save(weeklyGoal);
     }
 
@@ -59,6 +68,8 @@ public class WeeklyGoalService implements WeeklyGoalDao {
         MonthlyGoal monthlyGoal = findMonthlyGoalElseThrowException(id);
         WeeklyGoal weeklyGoal = modelMapper.map(weeklyGoalDTO, WeeklyGoal.class);
         weeklyGoal.setMonthlyGoal(monthlyGoal);
+        weeklyGoal.setUser(this.authUser);
+
         repository.save(weeklyGoal);
     }
 
@@ -72,6 +83,8 @@ public class WeeklyGoalService implements WeeklyGoalDao {
         existingGoal.setPriority(weeklyGoalDTO.getPriority());
         existingGoal.setProgress(weeklyGoalDTO.getProgress());
         existingGoal.setStatus(weeklyGoalDTO.getStatus());
+        existingGoal.setUser(this.authUser);
+
 
 
         repository.save(existingGoal);
@@ -85,12 +98,12 @@ public class WeeklyGoalService implements WeeklyGoalDao {
     }
 
     private WeeklyGoal findWeeklyGoalElseThrowException(long id) {
-        return repository.findById(id)
+        return repository.findByIdAndUser_Id(id, this.authUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Weekly Goal not found"));
     }
 
     private MonthlyGoal findMonthlyGoalElseThrowException(long id) {
-        return monthlyGoalRepository.findById(id)
+        return monthlyGoalRepository.findByIdAndUser_Id(id, this.authUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Monthly Goal not found"));
     }
 

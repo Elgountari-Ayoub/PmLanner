@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Auth } from 'src/app/Models/Auth';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-navbar',
@@ -6,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  constructor() {}
+  auth!: Auth;
+  constructor(private authService: AuthenticationService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const authUser = this.authService.getAuthUser();
+    if (authUser) this.auth = authUser;
+  }
   toggleMenu() {
     const navMenu = document.getElementById(
       'dropdown-user-menu'

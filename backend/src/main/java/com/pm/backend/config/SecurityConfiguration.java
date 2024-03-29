@@ -50,7 +50,6 @@ public class SecurityConfiguration {
                                 )
                                 .permitAll().anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
-                .oauth2ResourceServer(c -> c.opaqueToken(Customizer.withDefaults()))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
                         jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
