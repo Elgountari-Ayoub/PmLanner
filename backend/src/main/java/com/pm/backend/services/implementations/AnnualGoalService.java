@@ -55,6 +55,7 @@ public class AnnualGoalService implements AnnualGoalDao {
         existingGoal.setDeadline(annualGoalMonthlyGoalsDTO.getDeadline());
         existingGoal.setPriority(annualGoalMonthlyGoalsDTO.getPriority());
         existingGoal.setProgress(annualGoalMonthlyGoalsDTO.getProgress());
+        existingGoal.setStatus(annualGoalMonthlyGoalsDTO.getStatus());
 
         repository.save(existingGoal);
     }

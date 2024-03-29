@@ -16,11 +16,16 @@ export class DailyGoalService {
   getGoal(id: number): Observable<IDailyGoal> {
     return this.http.get<IDailyGoal>(`${this.dailyGoalsUrl}/${id}`);
   }
-  create(annualGoal: IDailyGoal): Observable<IDailyGoal> {
-    return this.http.post<IDailyGoal>(`${this.dailyGoalsUrl}`, annualGoal);
+  getTodayGoals(): Observable<IDailyGoal> {
+    return this.http.get<IDailyGoal>(`${this.dailyGoalsUrl}/today`);
   }
-  edit(id?: number, annualGoal?: IDailyGoal): Observable<IDailyGoal> {
-    return this.http.put<IDailyGoal>(`${this.dailyGoalsUrl}/${id}`, annualGoal);
+  create(dailyGoal: IDailyGoal): Observable<IDailyGoal> {
+    return this.http.post<IDailyGoal>(`${this.dailyGoalsUrl}`, dailyGoal);
+  }
+  edit(id?: number, dailyGoal?: IDailyGoal): Observable<IDailyGoal> {
+    console.log(dailyGoal);
+    
+    return this.http.put<IDailyGoal>(`${this.dailyGoalsUrl}/${id}`, dailyGoal);
   }
   delete(id: number) {
     return this.http.delete(`${this.dailyGoalsUrl}/${id}`);

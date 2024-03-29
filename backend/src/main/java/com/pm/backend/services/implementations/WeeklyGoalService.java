@@ -71,6 +71,8 @@ public class WeeklyGoalService implements WeeklyGoalDao {
         existingGoal.setDeadline(weeklyGoalDTO.getDeadline());
         existingGoal.setPriority(weeklyGoalDTO.getPriority());
         existingGoal.setProgress(weeklyGoalDTO.getProgress());
+        existingGoal.setStatus(weeklyGoalDTO.getStatus());
+
 
         repository.save(existingGoal);
     }

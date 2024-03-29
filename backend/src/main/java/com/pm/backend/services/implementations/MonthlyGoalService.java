@@ -76,6 +76,8 @@ public class MonthlyGoalService implements MonthlyGoalDao {
         existingGoal.setDeadline(monthlyGoalDTO.getDeadline());
         existingGoal.setPriority(monthlyGoalDTO.getPriority());
         existingGoal.setProgress(monthlyGoalDTO.getProgress());
+        existingGoal.setStatus(monthlyGoalDTO.getStatus());
+
 
         repository.save(existingGoal);
     }

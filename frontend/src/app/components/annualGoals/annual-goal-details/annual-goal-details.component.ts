@@ -110,7 +110,7 @@ export class AnnualGoalDetailsComponent {
   }
   futureDateValidator(control: FormControl): ValidationErrors | null {
     const deadline = moment(control.value).format('YYYY-MM-DD');
-    if (!deadline || moment(deadline).isSameOrBefore(moment())) {
+    if (!deadline || moment(deadline).isBefore(moment())) {
       return { futureDate: true };
     }
     return null;

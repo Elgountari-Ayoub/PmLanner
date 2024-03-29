@@ -1,5 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   IWeeklyGoal,
@@ -66,7 +72,7 @@ export class WeeklyGoalDetailsComponent implements OnInit {
 
   // ###############################################################################
   // -------------------------------------------------------------------------------
-  // ################################ WEEKLY GOALS ################################
+  // ################################ DAILY GOALS ################################
   // -------------------------------------------------------------------------------
   // ###############################################################################
 
@@ -80,8 +86,11 @@ export class WeeklyGoalDetailsComponent implements OnInit {
   initDailyGoalCreateForm() {
     this.dailyGoalCreateForm = this.formBuilder.group({
       title: ['', Validators.required],
-      description: ['', Validators.required],
-      deadline: ['', Validators.compose([Validators.required, this.futureDateValidator])],
+      description: [''],
+      deadline: [
+        moment().format('YYYY-MM-DD'),
+        Validators.compose([Validators.required, this.futureDateValidator]),
+      ],
       priority: ['', Validators.required],
       status: ['TODO', Validators.required],
       progress: [0, Validators.required],
@@ -89,14 +98,15 @@ export class WeeklyGoalDetailsComponent implements OnInit {
     });
   }
   futureDateValidator(control: FormControl): ValidationErrors | null {
-    const deadline = moment(control.value).format('YYYY-MM-DD'); 
-    if (!deadline || moment(deadline).isSameOrBefore(moment())) {
+    const deadline = moment(control.value);
+    const now = moment();
+
+    if (!deadline || deadline.isBefore(now.startOf('day'))) {
       return { futureDate: true };
     }
+
     return null;
   }
-  
-  
 
   showDailyGoalCreateModal() {
     let editModal = document.getElementById('daily-goal-create-modal');
@@ -142,7 +152,7 @@ export class WeeklyGoalDetailsComponent implements OnInit {
     }
   }
 
-  // ################################ EDIT WEEKLY GOAL ################################
+  // ################################ EDIT DAILY GOAL ################################
 
   dailyGoalEditForm!: FormGroup;
 
@@ -150,10 +160,7 @@ export class WeeklyGoalDetailsComponent implements OnInit {
     // Initialize the form
     this.dailyGoalEditForm = this.formBuilder.group({
       title: [this.dailyGoal ? this.dailyGoal.title : '', Validators.required],
-      description: [
-        this.dailyGoal ? this.dailyGoal.description : '',
-        Validators.required,
-      ],
+      description: [this.dailyGoal ? this.dailyGoal.description : ''],
       deadline: [
         this.dailyGoal ? this.dailyGoal.deadline : '',
         Validators.required,
@@ -170,16 +177,15 @@ export class WeeklyGoalDetailsComponent implements OnInit {
         this.dailyGoal ? this.dailyGoal.progress : '',
         Validators.required,
       ],
-      weeklyGoal: [
-        this.weeklyGoal ? this.weeklyGoal : '',
-        Validators.required,
-      ],
+      weeklyGoal: [this.weeklyGoal ? this.weeklyGoal : '', Validators.required],
     });
   }
 
   showDailyGoalEditModal(dailyGoal: IDailyGoal) {
     this.dailyGoal = dailyGoal;
     this.initDailyGoalEditForm();
+    console.log(this.dailyGoalEditForm.value);
+
     let editModal = document.getElementById('daily-goal-edit-modal');
     if (editModal != null) {
       editModal.classList.remove('hidden');
@@ -201,7 +207,6 @@ export class WeeklyGoalDetailsComponent implements OnInit {
       tempElement?.remove();
     }
   }
-
 
   editDailyGoal() {
     console.log(this.dailyGoalEditForm.value);

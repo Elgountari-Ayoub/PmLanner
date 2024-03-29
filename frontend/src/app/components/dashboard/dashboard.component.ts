@@ -1,15 +1,23 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import * as moment from 'moment';
 import {
   IAnnualGoal,
+  IDailyGoal,
   IMonthlyGoal,
   IPriority,
   IStatus,
   IWeeklyGoal,
 } from 'src/app/Models/interfaces';
 import { AnnualGoalsService } from 'src/app/services/annual-goals.service';
+import { DailyGoalService } from 'src/app/services/daily-goal.service';
 import { MonthlyGoalService } from 'src/app/services/monthly-goal.service';
 import { WeeklyGoalService } from 'src/app/services/weekly-goal.service';
 
@@ -26,6 +34,7 @@ export class DashboardComponent implements OnInit {
     private annualGoalService: AnnualGoalsService,
     private monthlyGoalService: MonthlyGoalService,
     private weeklyGoalService: WeeklyGoalService,
+    private dailyGoalService: DailyGoalService,
     private formBuilder: FormBuilder
   ) {}
   ngOnInit(): void {
@@ -37,9 +46,203 @@ export class DashboardComponent implements OnInit {
     this.initMonthlyGoalCreateForm();
     this.initMonthlyGoalEditForm();
 
-    // this.getWeeklyGoals();
-    // this.initWeeklyGoalCreateForm();
-    // this.initWeeklyGoalEditForm();
+    this.getWeeklyGoals();
+    this.initWeeklyGoalCreateForm();
+    this.initWeeklyGoalEditForm();
+
+    console.log(this.weeklyGoals);
+
+    this.getTodayGoals();
+    this.initDailyGoalCreateForm();
+    this.initDailyGoalEditForm();
+  }
+
+  // ##############################################################################
+  // ------------------------------------------------------------------------------
+  // ################################ TODAY GOALS ################################
+  // ------------------------------------------------------------------------------
+  // ##############################################################################
+
+  todayGoals: IDailyGoal[] = [];
+  getTodayGoals() {
+    this.dailyGoalService.getGoals().subscribe({
+      next: (data) => {
+        this.todayGoals = data as IDailyGoal[];
+        this.todayGoals_Nested = this.generatePyramidRows(this.todayGoals);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  // ##############################################################################
+  // ------------------------------------------------------------------------------
+  // ################################ ANNUAL GOALS ################################
+  // ------------------------------------------------------------------------------
+  // ##############################################################################
+
+  dailyGoal!: IDailyGoal;
+  dailyGoals: IDailyGoal[] = [];
+  todayGoals_Nested: IDailyGoal[][] = [];
+
+  // ################################ CREATE WEEKLY GOAL ################################
+
+  dailyGoalCreateForm!: FormGroup;
+
+  initDailyGoalCreateForm() {
+    this.dailyGoalCreateForm = this.formBuilder.group({
+      title: ['', Validators.required],
+      description: [''],
+      deadline: [
+        moment().format('YYYY-MM-DD'),
+        Validators.compose([
+          Validators.required,
+          this.DailyGoalFutureDateValidator,
+        ]),
+      ],
+      priority: ['', Validators.required],
+      status: ['TODO', Validators.required],
+      progress: [0, Validators.required],
+      weeklyGoal: ['', Validators.required],
+    });
+  }
+  DailyGoalFutureDateValidator(control: FormControl): ValidationErrors | null {
+    const deadline = moment(control.value);
+    const now = moment();
+
+    if (!deadline || deadline.isBefore(now.startOf('day'))) {
+      return { futureDate: true };
+    }
+
+    return null;
+  }
+
+  showDailyGoalCreateModal() {
+    let editModal = document.getElementById('daily-goal-create-modal');
+
+    if (editModal != null) {
+      editModal.classList.remove('hidden');
+      editModal.classList.add('flex');
+      document.body.insertAdjacentHTML(
+        'beforeend',
+        '<div modal-backdrop="" id="tempElement" class="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40"></div>'
+      );
+    }
+  }
+
+  hideDailyGoalCreatelModal() {
+    let editModal = document.getElementById('daily-goal-create-modal');
+    if (editModal != null) {
+      editModal.classList.remove('flex');
+      editModal.classList.add('hidden');
+      let tempElement = document.getElementById('tempElement');
+      tempElement?.remove();
+    }
+  }
+
+  createDailyGoal() {
+    console.log(this.dailyGoalCreateForm.valid);
+
+    if (this.dailyGoalCreateForm.valid) {
+      const formData = this.dailyGoalCreateForm.value;
+      this.dailyGoalService.create(formData).subscribe({
+        next: (goal) => {
+          this.getTodayGoals();
+          this.initDailyGoalCreateForm();
+        },
+        error: (error) => {
+          alert();
+          console.log(error);
+        },
+      });
+      console.log('Form submitted:', formData);
+    } else {
+      console.log('Form is invalid');
+    }
+  }
+
+  // ################################ EDIT DAILY GOAL ################################
+
+  dailyGoalEditForm!: FormGroup;
+
+  initDailyGoalEditForm() {
+    // Initialize the form
+    this.dailyGoalEditForm = this.formBuilder.group({
+      title: [this.dailyGoal ? this.dailyGoal.title : '', Validators.required],
+      description: [this.dailyGoal ? this.dailyGoal.description : ''],
+      deadline: [
+        this.dailyGoal ? this.dailyGoal.deadline : '',
+        Validators.required,
+      ],
+      priority: [
+        this.dailyGoal ? this.dailyGoal.priority : '',
+        Validators.required,
+      ],
+      status: [
+        this.dailyGoal ? this.dailyGoal.status : '',
+        Validators.required,
+      ],
+      progress: [
+        this.dailyGoal ? this.dailyGoal.progress : '',
+        Validators.required,
+      ],
+      weeklyGoal: [
+        this.dailyGoal ? this.dailyGoal.weeklyGoal : '',
+        Validators.required,
+      ],
+    });
+  }
+
+  showDailyGoalEditModal(dailyGoal: IDailyGoal) {
+    this.dailyGoal = dailyGoal;
+    console.log(this.dailyGoal);
+
+    this.initDailyGoalEditForm();
+    console.log(this.dailyGoalEditForm.value);
+
+    let editModal = document.getElementById('daily-goal-edit-modal');
+    if (editModal != null) {
+      editModal.classList.remove('hidden');
+      editModal.classList.add('flex');
+
+      document.body.insertAdjacentHTML(
+        'beforeend',
+        '<div modal-backdrop="" id="tempElement" class="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40"></div>'
+      );
+    }
+  }
+
+  hideDailyGoalEditlModal() {
+    let editModal = document.getElementById('daily-goal-edit-modal');
+    if (editModal != null) {
+      editModal.classList.remove('flex');
+      editModal.classList.add('hidden');
+      let tempElement = document.getElementById('tempElement');
+      tempElement?.remove();
+    }
+  }
+
+  editDailyGoal() {
+    console.log(this.dailyGoalEditForm.value);
+    if (this.dailyGoalEditForm.valid) {
+      const formData = this.dailyGoalEditForm.value;
+
+      this.dailyGoalService.edit(this.dailyGoal?.id, formData).subscribe({
+        next: (goal) => {
+          this.getTodayGoals();
+          this.initDailyGoalEditForm();
+          this.hideDailyGoalEditlModal();
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+      console.log('Form submitted:', formData);
+    } else {
+      // Handle form validation errors
+      console.log('Form is invalid');
+    }
   }
 
   // ##############################################################################
@@ -70,15 +273,18 @@ export class DashboardComponent implements OnInit {
     this.goalCreateForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      deadline: ['',  Validators.compose([Validators.required, this.futureDateValidator]),],
+      deadline: [
+        '',
+        Validators.compose([Validators.required, this.futureDateValidator]),
+      ],
       priority: ['', Validators.required],
       status: ['TODO', Validators.required],
       progress: [0, Validators.required],
     });
   }
-    futureDateValidator(control: FormControl): ValidationErrors | null {
+  futureDateValidator(control: FormControl): ValidationErrors | null {
     const deadline = moment(control.value).format('YYYY-MM-DD');
-    if (!deadline || moment(deadline).isSameOrBefore(moment())) {
+    if (!deadline || moment(deadline).isBefore(moment())) {
       return { futureDate: true };
     }
     return null;
@@ -380,6 +586,8 @@ export class DashboardComponent implements OnInit {
   getWeeklyGoals() {
     this.weeklyGoalService.getGoals().subscribe({
       next: (data) => {
+        console.log('data', data);
+        
         this.weeklyGoals = data as IWeeklyGoal[];
       },
       error: (err) => {

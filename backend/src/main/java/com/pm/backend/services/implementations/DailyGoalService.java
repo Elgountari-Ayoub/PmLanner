@@ -10,6 +10,7 @@ import com.pm.backend.services.interfaces.DailyGoalDao;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,13 @@ public class DailyGoalService implements DailyGoalDao {
     @Override
     public List<DailyGoal_WeeklyGoalDTO> getAll() {
         List<DailyGoal> dailyGoals = repository.findAllByOrderByCreatedAt();
+        return dailyGoals.stream()
+                .map(dailyGoal -> modelMapper.map(dailyGoal, DailyGoal_WeeklyGoalDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<DailyGoal_WeeklyGoalDTO> getByDeadLine(LocalDate deadline) {
+        List<DailyGoal> dailyGoals = repository.findAllByDeadline(deadline);
         return dailyGoals.stream()
                 .map(dailyGoal -> modelMapper.map(dailyGoal, DailyGoal_WeeklyGoalDTO.class))
                 .collect(Collectors.toList());
@@ -65,6 +73,7 @@ public class DailyGoalService implements DailyGoalDao {
         existingGoal.setDeadline(dailyGoalWeeklyGoalDTO.getDeadline());
         existingGoal.setPriority(dailyGoalWeeklyGoalDTO.getPriority());
         existingGoal.setProgress(dailyGoalWeeklyGoalDTO.getProgress());
+        existingGoal.setStatus(dailyGoalWeeklyGoalDTO.getStatus());
 
         repository.save(existingGoal);
     }

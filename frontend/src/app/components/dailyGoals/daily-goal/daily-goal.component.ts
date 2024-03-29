@@ -71,9 +71,9 @@ export class DailyGoalComponent implements OnInit {
       case 'TODO':
         return 'text-white bg-red-700';
       case 'IN_PROGRESS':
-        return 'text-white bg-green-700';
+        return 'text-white bg-blue-700';
       case 'DONE':
-        return 'text-white bg-gray-600';
+        return 'text-white bg-green-600';
       default:
         return '';
     }
