@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class WeeklyGoal extends Goal{
+public class WeeklyGoal extends Goal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -19,5 +19,7 @@ public class WeeklyGoal extends Goal{
     @JoinColumn(name = "monthly_goal_id")
     private MonthlyGoal monthlyGoal;
 
-
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

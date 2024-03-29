@@ -14,5 +14,7 @@ public class DailyGoal extends Goal{
     @JoinColumn(name = "weekly_goal_id")
     private WeeklyGoal weeklyGoal;
 
-
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

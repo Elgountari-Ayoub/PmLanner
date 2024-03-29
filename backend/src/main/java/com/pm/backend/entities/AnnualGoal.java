@@ -19,4 +19,8 @@ public class AnnualGoal extends Goal{
     @OneToMany(mappedBy = "annualGoal", cascade = CascadeType.ALL)
     private List<MonthlyGoal> monthlyGoals;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }

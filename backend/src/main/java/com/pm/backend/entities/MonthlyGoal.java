@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class MonthlyGoal extends Goal{
+public class MonthlyGoal extends Goal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -20,5 +20,7 @@ public class MonthlyGoal extends Goal{
     @OneToMany(mappedBy = "monthlyGoal", cascade = CascadeType.ALL)
     private List<WeeklyGoal> weeklyGoals;
 
-
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
