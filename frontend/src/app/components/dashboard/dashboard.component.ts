@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import * as moment from 'moment';
 import {
   IAnnualGoal,
   IMonthlyGoal,
@@ -69,11 +70,18 @@ export class DashboardComponent implements OnInit {
     this.goalCreateForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      deadline: ['', Validators.required],
+      deadline: ['',  Validators.compose([Validators.required, this.futureDateValidator]),],
       priority: ['', Validators.required],
       status: ['TODO', Validators.required],
       progress: [0, Validators.required],
     });
+  }
+    futureDateValidator(control: FormControl): ValidationErrors | null {
+    const deadline = moment(control.value).format('YYYY-MM-DD');
+    if (!deadline || moment(deadline).isSameOrBefore(moment())) {
+      return { futureDate: true };
+    }
+    return null;
   }
   showAnnualGoalCreateModal() {
     let editModal = document.getElementById('create-modal');

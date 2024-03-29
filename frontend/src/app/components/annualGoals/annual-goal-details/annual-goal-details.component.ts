@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import * as moment from 'moment';
 import {
   IAnnualGoal,
   IMonthlyGoal,
@@ -97,12 +98,22 @@ export class AnnualGoalDetailsComponent {
     this.monthlyGoalCreateForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      deadline: ['', Validators.required],
+      deadline: [
+        '',
+        Validators.compose([Validators.required, this.futureDateValidator]),
+      ],
       priority: ['', Validators.required],
       status: ['TODO', Validators.required],
       progress: [0, Validators.required],
       annualGoal: [this.annualGoal ? this.annualGoal : ''],
     });
+  }
+  futureDateValidator(control: FormControl): ValidationErrors | null {
+    const deadline = moment(control.value).format('YYYY-MM-DD');
+    if (!deadline || moment(deadline).isSameOrBefore(moment())) {
+      return { futureDate: true };
+    }
+    return null;
   }
   showMonthlyGoalCreateModal() {
     let editModal = document.getElementById('monthly-goal-create-modal');
@@ -178,10 +189,7 @@ export class AnnualGoalDetailsComponent {
         this.monthlyGoal ? this.monthlyGoal.progress : '',
         Validators.required,
       ],
-      annualGoal: [
-        this.annualGoal ? this.annualGoal : '',
-        Validators.required,
-      ],
+      annualGoal: [this.annualGoal ? this.annualGoal : '', Validators.required],
     });
   }
 

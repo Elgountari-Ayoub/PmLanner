@@ -3,6 +3,7 @@ package com.pm.backend.controllers;
 import com.pm.backend.dtos.monthlyGoalDtos.MonthlyGoalDTO;
 import com.pm.backend.dtos.monthlyGoalDtos.MonthlyGoal_Annual_Weekly_GoalsDTO;
 import com.pm.backend.services.interfaces.MonthlyGoalDao;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,13 +35,13 @@ public class MonthlyGoalController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createMonthlyGoal(@RequestBody MonthlyGoal_Annual_Weekly_GoalsDTO monthlyGoalDTO) {
+    public ResponseEntity<Void> createMonthlyGoal(@Valid @RequestBody MonthlyGoal_Annual_Weekly_GoalsDTO monthlyGoalDTO) {
         monthlyGoalService.save(monthlyGoalDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateMonthlyGoal(@PathVariable long id, @RequestBody MonthlyGoal_Annual_Weekly_GoalsDTO monthlyGoalDTO) {
+    public ResponseEntity<Void> updateMonthlyGoal(@PathVariable long id, @Valid @RequestBody MonthlyGoal_Annual_Weekly_GoalsDTO monthlyGoalDTO) {
         monthlyGoalService.update(id, monthlyGoalDTO);
         return ResponseEntity.ok().build();
     }

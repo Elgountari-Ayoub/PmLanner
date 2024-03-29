@@ -2,8 +2,9 @@
 <app-sidebar></app-sidebar>
 <div class="sm:ml-64">
   <div class="rounded-lg mt-14 80vh">
-    <div class="p-4">
+    <div class="p-4" *ngIf="monthlyGoal.weeklyGoals">
       <mat-icon
+      *ngIf="monthlyGoal.weeklyGoals.length < 4"
         class="text-blue-500 cursor-pointer"
         title="Create Weekly Goal"
         aria-hidden="false"
@@ -149,6 +150,12 @@
                   >
                     Deadline is required.
                   </div>
+                  <div
+                  *ngIf="weeklyGoalCreateForm.get('deadline')?.errors?.['futureDate']"
+                  class="p-1 bg-red-500 text-white text-xs mt-1 rounded"
+                >
+                  Deadline must be a future date.
+                </div>
                 </div>
                 <div>
                   <label

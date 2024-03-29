@@ -4,6 +4,7 @@
   <div class="rounded-lg mt-14 80vh">
     <div class="p-4">
       <mat-icon
+        *ngIf="weeklyGoal.dailyGoals.length <= 31"
         class="text-blue-500 cursor-pointer"
         title="Create Daily Goal"
         aria-hidden="false"
@@ -14,7 +15,7 @@
       ></mat-icon>
 
       <div
-        class="grid gap-4 mt-4 grid-cols-2 md-grid-cols-3 lg:grid-cols-3 md:mx-4 lg:mx-8 xl:mx-12"
+        class="grid gap-4 mt-4 grid-cols-2 md-grid-cols-3 lg:grid-cols-3"
         *ngIf="weeklyGoal"
       >
         <app-daily-goal
@@ -148,6 +149,12 @@
                     class="p-1 bg-red-500 text-white text-xs mt-1 rounded"
                   >
                     Deadline is required.
+                  </div>
+                  <div
+                    *ngIf="dailyGoalCreateForm.get('deadline')?.errors?.['futureDate']"
+                    class="p-1 bg-red-500 text-white text-xs mt-1 rounded"
+                  >
+                    Deadline must be a future date.
                   </div>
                 </div>
                 <div>

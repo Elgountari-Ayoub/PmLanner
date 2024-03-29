@@ -65,6 +65,15 @@
                   placeholder="Enter goal title"
                   required=""
                 />
+                <div
+                  *ngIf="
+                    goalCreateForm.get('title')?.hasError('required') &&
+                    goalCreateForm.get('title')?.touched
+                  "
+                  class="p-1 bg-red-500 text-white text-xs mt-1 rounded"
+                >
+                  Title is required.
+                </div>
               </div>
               <div>
                 <label
@@ -79,6 +88,17 @@
                   class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Enter goal description"
                 ></textarea>
+                <div
+                  *ngIf="
+                    goalCreateForm
+                      .get('description')
+                      ?.hasError('required') &&
+                    goalCreateForm.get('description')?.touched
+                  "
+                  class="p-1 bg-red-500 text-white text-xs mt-1 rounded"
+                >
+                  Description is required.
+                </div>
               </div>
               <div>
                 <label
@@ -94,6 +114,24 @@
                   placeholder="Select deadline"
                   required=""
                 />
+                <div
+                  *ngIf="
+                    goalCreateForm
+                      .get('deadline')
+                      ?.hasError('required') &&
+                    goalCreateForm.get('deadline')?.touched
+                  "
+                  class="p-1 bg-red-500 text-white text-xs mt-1 rounded"
+                >
+                  Deadline is required.
+                </div>
+                <div
+                  *ngIf="goalCreateForm.get('deadline')?.errors?.['futureDate']"
+                  class="p-1 bg-red-500 text-white text-xs mt-1 rounded"
+                >
+                  Deadline must be a future date.
+                </div>
+                
               </div>
               <div>
                 <label
@@ -113,6 +151,17 @@
                     {{ priority }}
                   </option>
                 </select>
+                <div
+                  *ngIf="
+                    goalCreateForm
+                      .get('priority')
+                      ?.hasError('required') &&
+                    goalCreateForm.get('priority')?.touched
+                  "
+                  class="p-1 bg-red-500 text-white text-xs mt-1 rounded"
+                >
+                  Priority is required.
+                </div>
               </div>
             </div>
             <button
@@ -645,37 +694,6 @@
         </div>
       </mat-tab>
       <!-- MONTHLY GOAL TAP -->
-      <mat-tab label="Monthly">
-        <div class="p-4">
-          <mat-icon
-            class="text-blue-500 cursor-pointer"
-            title="Create Monthly Goal"
-            aria-hidden="false"
-            aria-label="create icon"
-            fontIcon="add_circle"
-            type="button"
-            (click)="showMonthlyGoalCreateModal()"
-          ></mat-icon>
-
-          <div
-            *ngFor="let row of monthlyGoals_Nested; let i = index"
-            class="m-4"
-          >
-            <div class="grid gap-4 mt-4" [class]="getGridColClass(row.length)">
-              <app-monthly-goal
-                *ngFor="let monthlyGoal of row"
-                [monthlyGoal]="monthlyGoal"
-                [index]="i"
-                (goalDeleted)="getMonthlyGoals()"
-                (showEditGoalModal)="showMonthlyGoalEditModal(monthlyGoal)"
-                class="rounded-lg mx-2 hover:shadow-goal hover:scale-101 transition ease-linear delay-150"
-                [class]="getGoalCardStyleClass(i)"
-              ></app-monthly-goal>
-            </div>
-          </div>
-        </div>
-      </mat-tab>
-      <!-- WEEKLY GOAL TAP -->
       <mat-tab label="Monthly">
         <div class="p-4">
           <mat-icon

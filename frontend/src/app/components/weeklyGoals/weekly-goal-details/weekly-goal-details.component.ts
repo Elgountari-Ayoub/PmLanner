@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   IWeeklyGoal,
@@ -9,6 +9,7 @@ import {
 } from 'src/app/Models/interfaces';
 import { WeeklyGoalService } from 'src/app/services/weekly-goal.service';
 import { DailyGoalService } from 'src/app/services/daily-goal.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-weekly-goal-details',
@@ -80,13 +81,22 @@ export class WeeklyGoalDetailsComponent implements OnInit {
     this.dailyGoalCreateForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      deadline: ['', Validators.required],
+      deadline: ['', Validators.compose([Validators.required, this.futureDateValidator])],
       priority: ['', Validators.required],
       status: ['TODO', Validators.required],
       progress: [0, Validators.required],
       weeklyGoal: { id: this.weeklyGoal ? this.weeklyGoal.id : '' },
     });
   }
+  futureDateValidator(control: FormControl): ValidationErrors | null {
+    const deadline = moment(control.value).format('YYYY-MM-DD'); 
+    if (!deadline || moment(deadline).isSameOrBefore(moment())) {
+      return { futureDate: true };
+    }
+    return null;
+  }
+  
+  
 
   showDailyGoalCreateModal() {
     let editModal = document.getElementById('daily-goal-create-modal');

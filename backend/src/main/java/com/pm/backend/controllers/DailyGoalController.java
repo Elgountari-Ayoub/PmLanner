@@ -3,6 +3,7 @@ package com.pm.backend.controllers;
 import com.pm.backend.dtos.dailyGoalDtos.DailyGoalDTO;
 import com.pm.backend.dtos.dailyGoalDtos.DailyGoal_WeeklyGoalDTO;
 import com.pm.backend.services.interfaces.DailyGoalDao;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,13 +31,13 @@ public class DailyGoalController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createDailyGoal(@RequestBody DailyGoal_WeeklyGoalDTO dailyGoalDTO) {
+    public ResponseEntity<Void> createDailyGoal(@Valid  @RequestBody DailyGoal_WeeklyGoalDTO dailyGoalDTO) {
         dailyGoalService.save(dailyGoalDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateDailyGoal(@PathVariable long id, @RequestBody DailyGoal_WeeklyGoalDTO dailyGoalDTO) {
+    public ResponseEntity<Void> updateDailyGoal(@Valid @PathVariable long id, @RequestBody DailyGoal_WeeklyGoalDTO dailyGoalDTO) {
         dailyGoalService.update(id, dailyGoalDTO);
         return ResponseEntity.ok().build();
     }
