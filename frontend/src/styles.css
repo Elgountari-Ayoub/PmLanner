@@ -17,7 +17,6 @@ body {
 }
 #goal-options {
   visibility: hidden !important;
-  /* display: none !important; */
 }
 
 #goal-card:hover #goal-options {

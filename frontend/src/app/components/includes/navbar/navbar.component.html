@@ -1,6 +1,4 @@
-<nav
-  class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"
->
+<nav class="fixed top-0 z-50 w-full dark:bg-gray-800 dark:border-gray-700">
   <div class="px-3 py-3 lg:px-5 lg:pl-3">
     <div class="flex items-center justify-between">
       <div class="flex items-center justify-start rtl:justify-end">
@@ -38,22 +36,33 @@
           >
         </a>
       </div>
-      <div class="flex items-center">
+
+      <div *ngIf="!auth" class="flex gap-2">
+        <a
+        
+          class="px-2 py-1 bg-black text-white rounded-lg text-md"
+          routerLink="/signup"
+        >
+          Sing Up
+        </a>
+        <a class="px-2 py-1 text-black rounded-lg text-md"
+        routerLink="/login"
+        >Log In</a>
+      </div>
+      <div *ngIf="auth" class="flex items-center">
         <div class="flex flex-col items-center ms-3">
           <div>
             <button
               (click)="toggleMenu()"
               type="button"
-              class="flex text-sm bg-golden-goal text-white p-2 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+              class="flex text-sm bg-golden-goal-light text-white p-2 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
               aria-expanded="false"
             >
-              <!-- data-dropdown-toggle="dropdown-user" -->
               <span class="">Options</span>
-              <!-- <img class="w-8 h-8 rounded-full" src="" alt="user photo"> -->
             </button>
           </div>
           <div
-          *ngIf="auth"
+            *ngIf="auth"
             id="dropdown-user-menu"
             class="z-50 hidden my-10 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600 absolute -translate-x-12"
           >
