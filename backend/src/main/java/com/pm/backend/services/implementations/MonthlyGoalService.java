@@ -23,7 +23,7 @@ public class MonthlyGoalService implements MonthlyGoalDao {
     private final WeeklyGoalRepository weeklyGoalRepository;
     private final ModelMapper modelMapper;
     private AuthenticationService authenticationService;
-    private final User authUser;
+    private User authUser;
 
     public MonthlyGoalService(
             MonthlyGoalRepository repository, AnnualGoalRepository annualGoalRepository,
@@ -34,7 +34,6 @@ public class MonthlyGoalService implements MonthlyGoalDao {
         this.weeklyGoalRepository = weeklyGoalRepository;
         this.modelMapper = modelMapper;
         this.authenticationService = authenticationService;
-        this.authUser = authenticationService.getAuthUser();
 
     }
 
@@ -48,6 +47,7 @@ public class MonthlyGoalService implements MonthlyGoalDao {
 
     @Override
     public List<MonthlyGoal_Annual_Weekly_GoalsDTO> getAll() {
+        this.authUser = this.authenticationService.getAuthUser();
         List<MonthlyGoal> monthlyGoals = repository.findAllByUser_IdOrderByCreatedAt(this.authUser.getId());
         return monthlyGoals.stream()
                 .map(monthlyGoal -> modelMapper.map(monthlyGoal, MonthlyGoal_Annual_Weekly_GoalsDTO.class))
@@ -56,6 +56,7 @@ public class MonthlyGoalService implements MonthlyGoalDao {
 
     @Override
     public List<MonthlyGoal_Annual_Weekly_GoalsDTO> getAllByAnnualGoalId(long id) {
+        this.authUser = this.authenticationService.getAuthUser();
         List<MonthlyGoal> monthlyGoals = repository.findAllByAnnualGoalIdAndUser_IdOrderByCreatedAt(id, this.authUser.getId());
         return monthlyGoals.stream()
                 .map(monthlyGoal -> modelMapper.map(monthlyGoal, MonthlyGoal_Annual_Weekly_GoalsDTO.class))
@@ -67,6 +68,7 @@ public class MonthlyGoalService implements MonthlyGoalDao {
         AnnualGoal annualGoal = this.findAnnualGoalElseThrowException(monthlyGoalDTO.getAnnualGoal().getId());
         MonthlyGoal monthlyGoal = modelMapper.map(monthlyGoalDTO, MonthlyGoal.class);
         monthlyGoal.setAnnualGoal(annualGoal);
+        this.authUser = this.authenticationService.getAuthUser();
         monthlyGoal.setUser(this.authUser);
         repository.save(monthlyGoal);
     }
@@ -76,6 +78,7 @@ public class MonthlyGoalService implements MonthlyGoalDao {
         AnnualGoal annualGoal = this.findAnnualGoalElseThrowException(id);
         MonthlyGoal monthlyGoal = modelMapper.map(monthlyGoalDTO, MonthlyGoal.class);
         monthlyGoal.setAnnualGoal(annualGoal);
+        this.authUser = this.authenticationService.getAuthUser();
         monthlyGoal.setUser(this.authUser);
 
         repository.save(monthlyGoal);
@@ -91,6 +94,7 @@ public class MonthlyGoalService implements MonthlyGoalDao {
         existingGoal.setPriority(monthlyGoalDTO.getPriority());
         existingGoal.setProgress(monthlyGoalDTO.getProgress());
         existingGoal.setStatus(monthlyGoalDTO.getStatus());
+        this.authUser = this.authenticationService.getAuthUser();
         existingGoal.setUser(this.authUser);
 
         repository.save(existingGoal);
@@ -103,11 +107,15 @@ public class MonthlyGoalService implements MonthlyGoalDao {
     }
 
     private MonthlyGoal findMonthlyGoalElseThrowException(long id) {
+        this.authUser = this.authenticationService.getAuthUser();
+
         return repository.findByIdAndUser_Id(id, this.authUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Monthly Goal not found"));
     }
 
     private AnnualGoal findAnnualGoalElseThrowException(long id) {
+        this.authUser = this.authenticationService.getAuthUser();
+
         return annualGoalRepository.findByIdAndUser_Id(id, authUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Annual Goal not found"));
     }

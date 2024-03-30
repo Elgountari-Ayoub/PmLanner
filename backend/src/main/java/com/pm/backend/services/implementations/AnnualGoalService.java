@@ -22,10 +22,10 @@ public class AnnualGoalService implements AnnualGoalDao {
     private AuthenticationService authenticationService;
     private User authUser;
 
-    public AnnualGoalService(AnnualGoalRepository repository, ModelMapper modelMapper) {
+    public AnnualGoalService(AnnualGoalRepository repository, AuthenticationService authenticationService, ModelMapper modelMapper) {
         this.repository = repository;
         this.modelMapper = modelMapper;
-        this.authUser = authenticationService.getAuthUser();
+        this.authenticationService = authenticationService;
     }
 
     @Override
@@ -36,6 +36,8 @@ public class AnnualGoalService implements AnnualGoalDao {
 
     @Override
     public List<AnnualGoal_MonthlyGoalsDTO> getAll() {
+        this.authUser = this.authenticationService.getAuthUser();
+
         List<AnnualGoal> annualGoals = repository.findAllByUser_IdOrderByPriorityAscCreatedAt(this.authUser.getId());
         return annualGoals.stream().map(annualGoal -> modelMapper.map(annualGoal, AnnualGoal_MonthlyGoalsDTO.class)).toList();
     }
@@ -43,6 +45,8 @@ public class AnnualGoalService implements AnnualGoalDao {
     @Override
     public void save(AnnualGoal_MonthlyGoalsDTO annualGoalMonthlyGoalsDTO) {
         AnnualGoal annualGoal = modelMapper.map(annualGoalMonthlyGoalsDTO, AnnualGoal.class);
+        this.authUser = this.authenticationService.getAuthUser();
+
         annualGoal.setUser(this.authUser);
         repository.save(annualGoal);
     }
@@ -62,6 +66,8 @@ public class AnnualGoalService implements AnnualGoalDao {
         existingGoal.setPriority(annualGoalMonthlyGoalsDTO.getPriority());
         existingGoal.setProgress(annualGoalMonthlyGoalsDTO.getProgress());
         existingGoal.setStatus(annualGoalMonthlyGoalsDTO.getStatus());
+
+        this.authUser = this.authenticationService.getAuthUser();
         existingGoal.setUser(this.authUser);
 
         repository.save(existingGoal);
@@ -74,6 +80,7 @@ public class AnnualGoalService implements AnnualGoalDao {
     }
 
     private AnnualGoal findAnnualGoalElseThrowException(long id) {
+        this.authUser = this.authenticationService.getAuthUser();
         return repository.findByIdAndUser_Id(id, this.authUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Annual Goal not found"));
     }

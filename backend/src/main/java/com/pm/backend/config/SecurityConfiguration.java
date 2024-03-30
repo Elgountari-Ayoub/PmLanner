@@ -34,8 +34,6 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserService userService;
-    private final WebClientConfig webClientConfig;
-    private final WebClient userInfoClient;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -86,8 +84,5 @@ public class SecurityConfiguration {
         return config.getAuthenticationManager();
     }
 
-    @Bean
-    public OpaqueTokenIntrospector opaqueTokenIntrospector() {
-        return new GoogleOpaqueTokenIntrospector(userInfoClient);
-    }
+
 }

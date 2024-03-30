@@ -23,7 +23,7 @@ public class WeeklyGoalService implements WeeklyGoalDao {
     private DailyGoalRepository dailyGoalRepository;
     private ModelMapper modelMapper;
     private final AuthenticationService authenticationService;
-    private final User authUser;
+    private User authUser;
 
     public WeeklyGoalService(
             WeeklyGoalRepository repository, MonthlyGoalRepository monthlyGoalRepository,
@@ -34,7 +34,6 @@ public class WeeklyGoalService implements WeeklyGoalDao {
         this.dailyGoalRepository = dailyGoalRepository;
         this.modelMapper = modelMapper;
         this.authenticationService = authenticationService;
-        this.authUser = authenticationService.getAuthUser();
     }
 
     @Override
@@ -48,6 +47,7 @@ public class WeeklyGoalService implements WeeklyGoalDao {
 
     @Override
     public List<WeeklyGoal_Monthly_Daily_GoalsDTO> getAll() {
+        this.authUser = this.authenticationService.getAuthUser();
         List<WeeklyGoal> weeklyGoals = repository.findAllByUser_IdOrderByCreatedAt(this.authUser.getId());
         return weeklyGoals.stream()
                 .map(weeklyGoal -> modelMapper.map(weeklyGoal, WeeklyGoal_Monthly_Daily_GoalsDTO.class))
@@ -59,6 +59,7 @@ public class WeeklyGoalService implements WeeklyGoalDao {
         MonthlyGoal monthlyGoal = findMonthlyGoalElseThrowException(weeklyGoalDTO.getMonthlyGoal().getId());
         WeeklyGoal weeklyGoal = modelMapper.map(weeklyGoalDTO, WeeklyGoal.class);
         weeklyGoal.setMonthlyGoal(monthlyGoal);
+        this.authUser = this.authenticationService.getAuthUser();
         weeklyGoal.setUser(this.authUser);
         repository.save(weeklyGoal);
     }
@@ -68,6 +69,7 @@ public class WeeklyGoalService implements WeeklyGoalDao {
         MonthlyGoal monthlyGoal = findMonthlyGoalElseThrowException(id);
         WeeklyGoal weeklyGoal = modelMapper.map(weeklyGoalDTO, WeeklyGoal.class);
         weeklyGoal.setMonthlyGoal(monthlyGoal);
+        this.authUser = this.authenticationService.getAuthUser();
         weeklyGoal.setUser(this.authUser);
 
         repository.save(weeklyGoal);
@@ -83,6 +85,7 @@ public class WeeklyGoalService implements WeeklyGoalDao {
         existingGoal.setPriority(weeklyGoalDTO.getPriority());
         existingGoal.setProgress(weeklyGoalDTO.getProgress());
         existingGoal.setStatus(weeklyGoalDTO.getStatus());
+        this.authUser = this.authenticationService.getAuthUser();
         existingGoal.setUser(this.authUser);
 
 
@@ -98,11 +101,13 @@ public class WeeklyGoalService implements WeeklyGoalDao {
     }
 
     private WeeklyGoal findWeeklyGoalElseThrowException(long id) {
+        this.authUser = this.authenticationService.getAuthUser();
         return repository.findByIdAndUser_Id(id, this.authUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Weekly Goal not found"));
     }
 
     private MonthlyGoal findMonthlyGoalElseThrowException(long id) {
+        this.authUser = this.authenticationService.getAuthUser();
         return monthlyGoalRepository.findByIdAndUser_Id(id, this.authUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Monthly Goal not found"));
     }
