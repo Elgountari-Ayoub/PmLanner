@@ -85,7 +85,7 @@ export class DashboardComponent implements OnInit {
   dailyGoals: IDailyGoal[] = [];
   todayGoals_Nested: IDailyGoal[][] = [];
 
-  // ################################ CREATE WEEKLY GOAL ################################
+  // ################################ CREATE DAILY GOAL ################################
 
   dailyGoalCreateForm!: FormGroup;
 
@@ -166,6 +166,8 @@ export class DashboardComponent implements OnInit {
 
   initDailyGoalEditForm() {
     // Initialize the form
+    console.log(this.dailyGoal);
+    
     this.dailyGoalEditForm = this.formBuilder.group({
       title: [this.dailyGoal ? this.dailyGoal.title : '', Validators.required],
       description: [this.dailyGoal ? this.dailyGoal.description : ''],
@@ -193,7 +195,9 @@ export class DashboardComponent implements OnInit {
   }
 
   showDailyGoalEditModal(dailyGoal: IDailyGoal) {
+    
     this.dailyGoal = dailyGoal;
+    console.log(dailyGoal);
     console.log(this.dailyGoal);
 
     this.initDailyGoalEditForm();
