@@ -1013,6 +1013,7 @@
     </div>
 
     <mat-tab-group>
+      <!-- DAILY GOAL TAP -->
       <mat-tab label="Today">
         <div class="p-4">
           <mat-icon
@@ -1039,7 +1040,8 @@
           </div>
         </div>
       </mat-tab>
-      <mat-tab label="Annual">
+      <!-- WEEKLY GOAL TAP -->
+      <!-- <mat-tab label="Weekly">
         <div class="p-4">
           <mat-icon
             class="text-blue-500 cursor-pointer"
@@ -1047,27 +1049,24 @@
             aria-hidden="false"
             aria-label="create icon"
             fontIcon="add_circle"
-            (click)="showAnnualGoalCreateModal()"
+            (click)="showDailyGoalCreateModal()"
             type="button"
           ></mat-icon>
-          <div
-            *ngFor="let row of annualGoals_Nested; let i = index"
-            class="m-4"
-          >
+          <div *ngFor="let row of todayGoals_Nested; let i = index" class="m-4">
             <div class="grid gap-4 mt-4" [class]="getGridColClass(row.length)">
-              <app-annual-goal
-                *ngFor="let annualGoal of row"
-                [annualGoal]="annualGoal"
+              <app-daily-goal
+                *ngFor="let todayGoal of row"
+                [dailyGoal]="todayGoal"
                 [index]="i"
-                (goalDeleted)="getAnnualGoals()"
-                (showEditGoalModal)="showAnnualGoalEditModal(annualGoal)"
+                (goalDeleted)="getTodayGoals()"
+                (showEditGoalModal)="showDailyGoalEditModal(todayGoal)"
                 class="rounded-lg mx-2 hover:shadow-goal hover:scale-101 transition ease-linear delay-150"
                 [class]="getGoalCardStyleClass(i)"
-              ></app-annual-goal>
+              ></app-daily-goal>
             </div>
           </div>
         </div>
-      </mat-tab>
+      </mat-tab> -->
       <!-- MONTHLY GOAL TAP -->
       <mat-tab label="Monthly">
         <div class="p-4">
@@ -1095,6 +1094,36 @@
                 class="rounded-lg mx-2 hover:shadow-goal hover:scale-101 transition ease-linear delay-150"
                 [class]="getGoalCardStyleClass(i)"
               ></app-monthly-goal>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      <!-- ANNUAL GOAL TAP -->
+      <mat-tab label="Annual">
+        <div class="p-4">
+          <mat-icon
+            class="text-blue-500 cursor-pointer"
+            title="Create Annual Goal"
+            aria-hidden="false"
+            aria-label="create icon"
+            fontIcon="add_circle"
+            (click)="showAnnualGoalCreateModal()"
+            type="button"
+          ></mat-icon>
+          <div
+            *ngFor="let row of annualGoals_Nested; let i = index"
+            class="m-4"
+          >
+            <div class="grid gap-4 mt-4" [class]="getGridColClass(row.length)">
+              <app-annual-goal
+                *ngFor="let annualGoal of row"
+                [annualGoal]="annualGoal"
+                [index]="i"
+                (goalDeleted)="getAnnualGoals()"
+                (showEditGoalModal)="showAnnualGoalEditModal(annualGoal)"
+                class="rounded-lg mx-2 hover:shadow-goal hover:scale-101 transition ease-linear delay-150"
+                [class]="getGoalCardStyleClass(i)"
+              ></app-annual-goal>
             </div>
           </div>
         </div>
